@@ -2,5 +2,10 @@ node_modules/
 .next/
 out/
 .playwright-mcp/
-*.png
 *.log
+
+# Ignore temp screenshots but keep public assets
+/test-*.png
+/live-*.png
+/*.png
+!public/*.png

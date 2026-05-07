@@ -145,6 +145,12 @@ export const videos: Video[] = [
     venue: "Security Conversations",
   },
   {
+    title: "Rob Ragan on AI (Extended Interview)",
+    youtubeId: "u8ezhHln-P4",
+    year: "2023",
+    venue: "Security Conversations",
+  },
+  {
     title: "SmogCloud: Expose Yourself Without Insecurity",
     youtubeId: "MU6IPajqX2g",
     year: "2020",
