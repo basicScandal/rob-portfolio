@@ -114,13 +114,6 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    title: "Nebula Scanner",
-    description:
-      "Multi-agent automated penetration testing platform. Orchestrates web crawling, endpoint clustering, and parallel AI agent execution. Proprietary deduplication reduces token waste by 99%.",
-    tags: ["multi-agent", "pentest", "platform"],
-    link: "https://github.com/BishopFox/orchestration-pipeline-nebula-scanner",
-  },
-  {
     title: "Arbiter",
     description:
       "AI judge agent for NEBULA:FOG 2026. Watches hackathon demos via Gemini Live, scores with multi-model ensemble, detects prompt injection in 7 languages. Judged 25 live demos. 1,451 tests passing.",

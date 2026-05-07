@@ -14,7 +14,7 @@ const events = [
     location: "San Francisco, CA",
     description:
       "Second installment. 100 builders, $5K+ in prizes plus partner bounties. Four challenge tracks spanning offensive AI, defensive architecture, privacy-preserving trust, and experimental attack surfaces.",
-    stats: { builders: "100", projects: "TBD", tracks: "4" },
+    stats: { builders: "100", projects: "25", tracks: "4" },
     link: "https://nebulafog.ai",
   },
   {
@@ -96,8 +96,8 @@ export default function HackathonsPage() {
                 role: "Principal Technology Strategist, Bishop Fox",
               },
               {
-                name: "Caleb Sima",
-                role: "Founder, Whiterabbit.vc",
+                name: "Gabriel Bernadett-Shapiro",
+                role: "Distinguished AI Research Scientist, SentinelOne",
               },
               {
                 name: "Gwenyth Castro",
@@ -243,6 +243,32 @@ export default function HackathonsPage() {
                 )}
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Gallery */}
+        <section className="mt-16">
+          <span className="section-number">
+            &sect; 06.4 &mdash; Gallery
+          </span>
+          <h2 className="font-editorial text-2xl mt-2 mb-4 text-fg">
+            Demo Gallery
+          </h2>
+          <div className="card-editorial rounded-lg p-6">
+            <p className="text-fg-muted leading-relaxed">
+              40 teams built at the intersection of AI and security across two
+              events. 15 projects at PRIME 2025, 25 at SINGULARITY 2026.
+              Everything from autonomous agent exploits to self-healing defense
+              systems to zero-knowledge trust protocols. Every team demoed live.
+            </p>
+            <a
+              href="https://nebulafog.ai/gallery"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-4 font-meta text-accent hover:underline"
+            >
+              Browse all demos <ExternalLink size={12} />
+            </a>
           </div>
         </section>
 
