@@ -65,34 +65,34 @@ function TerminalBlock() {
         <div className="terminal-dot bg-yellow-500" />
         <div className="terminal-dot bg-green-500" />
         <span className="ml-2 text-[10px] text-gray-500 font-mono">
-          ~/agents/alpharius
+          ~/nebulafog/arbiter
         </span>
       </div>
       <div className="p-4 sm:p-6 space-y-2 text-sm">
         <p>
           <span className="text-green-400">$</span>{" "}
           <span className="text-gray-300">
-            python -m alpharius --target app.local
+            python arbiter.py --mode live-judge
           </span>
         </p>
         <p className="text-amber-400 mt-3">
-          [*] Alpharius v0.3.0 // Autonomous Security Agent
+          [*] Arbiter v1.0 // AI Hackathon Judge
         </p>
         <p className="text-gray-400">
-          [+] Crawling target... 47 endpoints found
+          [+] Gemini Live connected (camera + audio)
         </p>
         <p className="text-gray-400">
-          [+] Focus: idor, business_logic, auth_bypass
+          [+] Scoring ensemble: Gemini + Claude + Groq
         </p>
         <p className="text-gray-500 text-xs mt-1">
-          &gt; Budget: 30min | Cost cap: $2.00
+          &gt; Demo 14/25 | Team: ghost_protocol
         </p>
         <p className="text-green-400 mt-3 text-xs leading-relaxed">
-          FINDING: IDOR on /api/v2/users/&#123;id&#125;/profile
+          SCORE: 8.7/10 | Innovation: 9 | Technical: 8
           <br />
-          Any authenticated user can read other users&apos;
+          &quot;Clever use of tool-use sandboxing to
           <br />
-          profiles by iterating the ID parameter...
+          contain agent lateral movement...&quot;
         </p>
         <p className="mt-3">
           <span className="text-green-400">$</span>{" "}
@@ -350,39 +350,38 @@ export default function Home() {
         <div className="grid gap-8 lg:grid-cols-[1.3fr_1fr] items-start">
           <div>
             <span className="font-meta text-accent">
-              Active Project // 2025-Present
+              Built for NEBULA:FOG 2026
             </span>
             <h3 className="font-editorial text-2xl mt-2 text-fg">
-              Alpharius
+              Arbiter
             </h3>
             <p className="mt-3 text-fg-muted leading-relaxed">
-              LLM-powered autonomous security testing agent that finds the
-              vulnerabilities traditional scanners miss. Business logic flaws,
-              IDOR, race conditions, authorization bypasses. The stuff that
-              requires understanding what an application is supposed to do, not
-              just pattern matching against known signatures. Built on Claude
-              Agent SDK.
+              AI judge agent that watched 25 live hackathon demos in real time
+              via Gemini Live API. Scores projects with a multi-model ensemble
+              (Gemini + Claude + Groq), delivers commentary via Cartesia TTS,
+              and defends itself against prompt injection attempts in 7
+              languages. 1,451 tests passing.
             </p>
             <ul className="mt-4 space-y-2 text-sm text-fg-muted">
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Finds semantic vulnerabilities that need application context
+                Real-time camera + audio capture via Gemini Live API
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Time and cost budget controls for autonomous testing
+                Multi-model scoring ensemble with outlier detection
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Focus areas: IDOR, business logic, auth bypass, race conditions
+                Prompt injection defense: regex + semantic classifier, 7 languages
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Built on Claude Agent SDK with Docker-based test targets
+                Cross-team deliberation with full demo memory
               </li>
             </ul>
             <a
-              href="https://github.com/BishopFox/Alpharius"
+              href="https://github.com/basicScandal/arbiter"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-6 font-meta text-accent hover:underline"

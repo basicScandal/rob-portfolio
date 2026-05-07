@@ -268,26 +268,11 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: "Alpharius",
-    description:
-      "LLM-powered autonomous security testing agent. Finds business logic flaws, IDOR vulnerabilities, race conditions, and auth bypasses that traditional scanners miss. Built on Claude Agent SDK.",
-    tags: ["AI agent", "Claude SDK", "autonomous"],
-    link: "https://github.com/BishopFox/Alpharius",
-    featured: true,
-  },
-  {
     title: "Arbiter",
     description:
       "AI judge agent for NEBULA:FOG 2026. Watches hackathon demos via Gemini Live, scores with multi-model ensemble, detects prompt injection in 7 languages. Judged 25 live demos. 1,451 tests passing.",
     tags: ["AI judge", "prompt injection", "multi-model"],
     link: "https://github.com/basicScandal/arbiter",
-  },
-  {
-    title: "WhoisGenius",
-    description:
-      "Domain intelligence API with AI-powered operator attribution. Fuses 11 data sources when WHOIS fails. Per-signal confidence breakdowns. 2,022 unit tests + 39 e2e tests.",
-    tags: ["OSINT", "DNS", "AI"],
-    link: "https://github.com/basicScandal/whoisgenius",
   },
   {
     title: "Starlog",
