@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import robPhoto from "../../public/rob-ragan-2024.jpg";
+import robPorsche from "../../public/rob-porsche.png";
 
 export function PortraitEasterEgg() {
   const [clicked, setClicked] = useState(false);
@@ -44,8 +45,8 @@ export function PortraitEasterEgg() {
         }`}
       >
         {clicked ? (
-          <img
-            src="/rob-porsche.png"
+          <Image
+            src={robPorsche}
             alt="Rob Ragan"
             className="w-full h-full object-cover object-center animate-fade-in-up"
             style={{ filter: "none", mixBlendMode: "normal" }}
