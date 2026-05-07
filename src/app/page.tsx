@@ -274,13 +274,13 @@ export default function Home() {
           <div className="animate-fade-in-up">
             <span className="section-number">&sect; 00 &mdash; Introduction</span>
             <h1 className="font-editorial text-4xl sm:text-5xl lg:text-6xl font-bold mt-3 text-fg leading-[1.1]">
-              Applied Research Leader.
+              Applied Security
               <br />
               <span className="text-accent">
-                Agentic Engineer.
+                Research Leader.
               </span>
               <br />
-              Security Researcher.
+              Agentic Engineer.
             </h1>
             <p className="mt-6 text-lg text-fg-muted leading-relaxed max-w-xl">
               I&apos;m Rob Ragan, Principal Technology Strategist at{" "}

@@ -96,6 +96,102 @@ export const talks: Talk[] = [
   },
 ];
 
+export interface Video {
+  title: string;
+  youtubeId: string;
+  year: string;
+  venue: string;
+  coPresenter?: string;
+}
+
+export const videos: Video[] = [
+  {
+    title: "AI on the Radar: Securing AI-Driven Development",
+    youtubeId: "71mMFsRZn7M",
+    year: "2026",
+    venue: "Snyk / AI on the Radar",
+  },
+  {
+    title: "The Promise and Perils of AI: Navigating Emerging Cyber Threats",
+    youtubeId: "k8AbPDrew-w",
+    year: "2025",
+    venue: "Dark Reading Panel",
+  },
+  {
+    title: "Testing LLM Algorithms While AI Tests Us",
+    youtubeId: "bpw0zopn1H0",
+    year: "2024",
+    venue: "HackGDL",
+    coPresenter: "Oscar Salazar",
+  },
+  {
+    title: "From Software Developer to Penetration Tester",
+    youtubeId: "TeNaN9jtpaI",
+    year: "2024",
+    venue: "The Hacker Factory",
+  },
+  {
+    title: "Rob Ragan on AI Solving Security Problems",
+    youtubeId: "HABl8PquzL8",
+    year: "2023",
+    venue: "Security Conversations",
+  },
+  {
+    title: "SmogCloud: Expose Yourself Without Insecurity",
+    youtubeId: "MU6IPajqX2g",
+    year: "2020",
+    venue: "Black Hat USA",
+  },
+  {
+    title: "Twist & Shout: Ferris Bueller's Guide to Domain Permutations",
+    youtubeId: "Yp19i40plOA",
+    year: "2019",
+    venue: "BSidesSF",
+    coPresenter: "Kelly Albrink",
+  },
+  {
+    title: "Pose a Threat: Perceptual Analysis for Bug Hunters",
+    youtubeId: "unAQCEkOtFk",
+    year: "2019",
+    venue: "OWASP AppSec Cali",
+    coPresenter: "Oscar Salazar",
+  },
+  {
+    title: "CloudBots: Harvesting Crypto Coins Like a Botnet Farmer",
+    youtubeId: "cpUtYq4SJKA",
+    year: "2014",
+    venue: "Black Hat USA",
+    coPresenter: "Oscar Salazar",
+  },
+  {
+    title: "USA TODAY: Google Hacking Tool for Consumers",
+    youtubeId: "g1Succb1zi8",
+    year: "2012",
+    venue: "USA TODAY",
+  },
+  {
+    title: "Tenacious Diggity: Skinny Dippin' in a Sea of Bing",
+    youtubeId: "SxUjmfN0rEY",
+    year: "2012",
+    venue: "DEF CON 20",
+    coPresenter: "Francis Brown",
+  },
+  {
+    title: "Pulp Google Hacking: Next Gen Search Engine Arsenal",
+    youtubeId: "iAvWNX4zLps",
+    year: "2011",
+    venue: "Black Hat USA",
+    coPresenter: "Fran Brown",
+  },
+  {
+    title: "Lord of the Bing: Taking Back Search Engine Hacking",
+    youtubeId: "OAwhzUMdY4E",
+    year: "2010",
+    venue: "DEF CON 18",
+    coPresenter: "Francis Brown",
+  },
+];
+
 export interface Podcast {
   show: string;
   title: string;

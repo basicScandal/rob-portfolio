@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { ExternalLink } from "lucide-react";
-import { talks, podcasts } from "@/lib/data";
+import { ExternalLink, Play } from "lucide-react";
+import { talks, podcasts, videos } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Talks",
@@ -145,6 +145,56 @@ export default function TalksPage() {
                   <p className="font-meta text-fg-faint mt-2">
                     Host: {pod.host}
                   </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        {/* Video Gallery */}
+        <section className="mt-16">
+          <span className="section-number">
+            &sect; 04.2 &mdash; Videos
+          </span>
+          <h2 className="font-editorial text-2xl mt-2 mb-8 text-fg">
+            Video Gallery
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {videos.map((video) => (
+              <a
+                key={video.youtubeId}
+                href={`https://www.youtube.com/watch?v=${video.youtubeId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card-editorial rounded-lg overflow-hidden group block"
+              >
+                <div className="relative aspect-video bg-charcoal-light">
+                  <img
+                    src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
+                    alt={video.title}
+                    className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-black/60 flex items-center justify-center group-hover:bg-accent/80 transition-colors">
+                      <Play size={20} className="text-white ml-0.5" fill="white" />
+                    </div>
+                  </div>
+                  <span className="absolute top-2 right-2 font-meta text-[9px] px-1.5 py-0.5 rounded bg-black/70 text-white">
+                    {video.year}
+                  </span>
+                </div>
+                <div className="p-3">
+                  <p className="font-meta text-accent text-[10px]">
+                    {video.venue}
+                  </p>
+                  <h3 className="text-sm text-fg leading-snug mt-1 group-hover:text-accent transition-colors line-clamp-2">
+                    {video.title}
+                  </h3>
+                  {video.coPresenter && (
+                    <p className="font-meta text-fg-faint text-[10px] mt-1">
+                      w/ {video.coPresenter}
+                    </p>
+                  )}
                 </div>
               </a>
             ))}
