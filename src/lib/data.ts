@@ -151,8 +151,15 @@ export const videos: Video[] = [
     coPresenter: "Oscar Salazar",
   },
   {
+    title: "Never Surrender: Reducing Social Engineering Risk",
+    youtubeId: "fIQdEEN0p5k",
+    year: "2015",
+    venue: "BSides Pittsburgh",
+    coPresenter: "Christina Camilleri",
+  },
+  {
     title: "CloudBots: Harvesting Crypto Coins Like a Botnet Farmer",
-    youtubeId: "cpUtYq4SJKA",
+    youtubeId: "llW8rI_l0u4",
     year: "2014",
     venue: "Black Hat USA",
     coPresenter: "Oscar Salazar",
@@ -183,6 +190,12 @@ export const videos: Video[] = [
     year: "2010",
     venue: "DEF CON 18",
     coPresenter: "Francis Brown",
+  },
+  {
+    title: "Filter Evasion: Houdini on the Wire",
+    youtubeId: "CMfa56dusMI",
+    year: "2009",
+    venue: "OuterZ0ne",
   },
 ];
 
