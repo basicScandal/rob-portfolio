@@ -28,6 +28,12 @@ export interface Talk {
 
 export const talks: Talk[] = [
   {
+    year: "2026",
+    conference: "Decibel RSAC Founder Festival",
+    title: "Human Over the Loop",
+    tags: ["agentic AI", "RSA week"],
+  },
+  {
     year: "2025",
     conference: "Dark Reading Panel",
     title: "The Promise and Perils of AI: Navigating Emerging Cyber Threats",
