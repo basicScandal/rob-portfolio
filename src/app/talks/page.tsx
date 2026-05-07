@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { talks } from "@/lib/data";
+import { ExternalLink } from "lucide-react";
+import { talks, podcasts } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Talks",
@@ -101,6 +102,54 @@ export default function TalksPage() {
             );
           })}
         </div>
+
+        {/* Podcasts */}
+        <section className="mt-16">
+          <span className="section-number">
+            &sect; 04.1 &mdash; Podcasts
+          </span>
+          <h2 className="font-editorial text-2xl mt-2 mb-8 text-fg">
+            Podcast Appearances
+          </h2>
+          <div className="space-y-4">
+            {podcasts.map((pod, i) => (
+              <a
+                key={pod.title}
+                href={pod.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card-editorial rounded-lg p-5 grid gap-3 sm:grid-cols-[140px_1fr] group block"
+              >
+                <div>
+                  <span className="font-meta text-accent">{pod.show}</span>
+                  <p className="font-meta text-fg-faint mt-1">
+                    {new Date(pod.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                    })}
+                  </p>
+                </div>
+                <div>
+                  <div className="flex items-start justify-between">
+                    <h3 className="font-editorial text-base text-fg leading-snug group-hover:text-accent transition-colors">
+                      {pod.title}
+                    </h3>
+                    <ExternalLink
+                      size={14}
+                      className="text-fg-faint group-hover:text-accent transition-colors shrink-0 ml-2 mt-1"
+                    />
+                  </div>
+                  <p className="text-sm text-fg-muted mt-1 leading-relaxed">
+                    {pod.description}
+                  </p>
+                  <p className="font-meta text-fg-faint mt-2">
+                    Host: {pod.host}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
 
         {/* Additional Conferences */}
         <div className="mt-16 p-6 border border-dashed border-border rounded-lg">

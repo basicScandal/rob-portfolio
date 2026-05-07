@@ -96,6 +96,72 @@ export const talks: Talk[] = [
   },
 ];
 
+export interface Podcast {
+  show: string;
+  title: string;
+  date: string;
+  host: string;
+  link: string;
+  description: string;
+}
+
+export const podcasts: Podcast[] = [
+  {
+    show: "CyberScoop Safe Mode",
+    title: "The 'Iron Man' Suit for Pen Testers",
+    date: "2025-05-29",
+    host: "Greg Otto",
+    link: "https://cyberscoop.com/radio/bishop-fox-rob-ragan-iron-man-suit-agentic-ai/",
+    description:
+      "Building agentic AI that augments offensive security professionals. How adaptive AI tools are reshaping penetration testing.",
+  },
+  {
+    show: "Forgepoint Capital",
+    title: "Demystifying AI and LLM Pen Testing",
+    date: "2024-07-30",
+    host: "Kathryn Shih",
+    link: "https://forgepointcap.com/perspectives/tales-from-the-forefront-demystifying-ai-and-llm-pen-testing/",
+    description:
+      "Critical vulnerabilities in LLM applications. RCE, API key exposure, injection in output rendering. What enterprises get wrong.",
+  },
+  {
+    show: "The Hacker Factory",
+    title: "From Software Developer to Penetration Tester",
+    date: "2024-01-13",
+    host: "Phillip Wylie",
+    link: "https://www.youtube.com/watch?v=TeNaN9jtpaI",
+    description:
+      "Origin story. How 2600 Magazine and hacker culture led from software development into professional penetration testing.",
+  },
+  {
+    show: "Security Conversations",
+    title: "The Excitement of AI Solving Security Problems",
+    date: "2023-12-07",
+    host: "Ryan Naraine",
+    link: "https://securityconversations.com/episode/rob-ragan-on-the-excitement-of-ai-solving-security-problems/",
+    description:
+      "Scaling pen testing ops, AI as an inflection point comparable to the internet, and the case for equitable global AI access.",
+  },
+  {
+    show: "The Segment (Illumio)",
+    title: "Live from RSAC! Test, Verify, Validate",
+    date: "2023-06-07",
+    host: "Raghu Nandakumara",
+    link: "https://www.illumio.com/podcast/live-from-rsac-test-verify-validate",
+    description:
+      "Zero Trust in hybrid environments. OT/IoT vulnerabilities in legacy critical infrastructure. Threat actor categorization.",
+  },
+  {
+    show: "The Official OffSec Podcast",
+    title: "Continuous Security Testing with Rob Ragan",
+    date: "2022-10-25",
+    host: "FalconSpy",
+    link: "https://creators.spotify.com/pod/show/offsec/episodes/36-Continuous-Security-Testing-with-Rob-Ragan--Principal-Researcher-at-Bishop-Fox-e1pmug6",
+    description:
+      "Building continuous security testing programs. Real bugs found deploying continuous tooling. Career advice for aspiring security professionals.",
+  },
+];
+
 export interface Project {
   title: string;
   description: string;
