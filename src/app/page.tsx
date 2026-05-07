@@ -1,8 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { stats, talks, projects, blogPosts } from "@/lib/data";
-import robPhoto from "../../public/rob-ragan-2024.jpg";
+import { PortraitEasterEgg } from "@/components/PortraitEasterEgg";
 
 function SectionHeader({
   number,
@@ -324,22 +323,7 @@ export default function Home() {
 
           {/* Portrait */}
           <div className="animate-fade-in-up animate-delay-200 flex justify-center lg:justify-end">
-            <div className="relative">
-              <div className="portrait-duotone w-64 h-72 sm:w-72 sm:h-80 rounded-lg overflow-hidden bg-gradient-to-br from-accent/20 to-charcoal-light">
-                <Image
-                  src={robPhoto}
-                  alt="Rob Ragan"
-                  className="w-full h-full object-cover object-top"
-                  priority
-                  placeholder="blur"
-                />
-              </div>
-              <div className="mt-3 text-center">
-                <span className="font-mono text-[10px] text-fg-faint tracking-wider">
-                  Plate I &middot; San Francisco, CA
-                </span>
-              </div>
-            </div>
+            <PortraitEasterEgg />
           </div>
         </div>
       </section>
