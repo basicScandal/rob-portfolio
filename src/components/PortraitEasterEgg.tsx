@@ -1,15 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import robPhoto from "../../public/rob-ragan-2024.jpg";
-import robPorsche from "../../public/rob-porsche.png";
 
 export function PortraitEasterEgg() {
   const [clicked, setClicked] = useState(false);
   const [warping, setWarping] = useState(false);
+  const [porscheSrc, setPorscheSrc] = useState("");
   const router = useRouter();
+
+  // Resolve basePath for the porsche image at runtime
+  useEffect(() => {
+    // Next.js sets __NEXT_DATA__.basePath or we can detect from current URL
+    const base = window.location.pathname.replace(/\/$/, "").split("/").slice(0, -1).join("/") || "";
+    const prefix = window.location.pathname.includes("/rob-portfolio") ? "/rob-portfolio" : "";
+    setPorscheSrc(`${prefix}/rob-porsche.png`);
+
+    // Preload the image
+    const img = new window.Image();
+    img.src = `${prefix}/rob-porsche.png`;
+  }, []);
 
   const handleClick = () => {
     if (clicked) return;
@@ -38,30 +50,33 @@ export function PortraitEasterEgg() {
 
       <div
         onClick={handleClick}
-        className={`portrait-duotone w-64 h-72 sm:w-72 sm:h-80 rounded-lg overflow-hidden bg-gradient-to-br from-accent/20 to-charcoal-light cursor-pointer transition-all duration-700 ${
+        className={`portrait-duotone w-64 h-72 sm:w-72 sm:h-80 rounded-lg overflow-hidden bg-gradient-to-br from-accent/20 to-charcoal-light cursor-pointer transition-all duration-700 relative ${
           clicked
             ? "scale-105 ring-2 ring-green-400/50 shadow-[0_0_40px_rgba(57,211,83,0.3)]"
             : "hover:scale-[1.02]"
         }`}
       >
-        {/* Both images always rendered, swap via opacity */}
+        {/* Professional headshot */}
         <Image
           src={robPhoto}
           alt="Rob Ragan"
-          className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ${
+          className={`w-full h-full object-cover object-top transition-opacity duration-500 ${
             clicked ? "opacity-0" : "opacity-100"
           }`}
           priority
           placeholder="blur"
         />
-        <Image
-          src={robPorsche}
-          alt="Rob Ragan"
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ${
-            clicked ? "opacity-100" : "opacity-0"
-          }`}
-          style={clicked ? { filter: "none", mixBlendMode: "normal" } : {}}
-        />
+        {/* Easter egg photo - absolute overlay */}
+        {porscheSrc && (
+          <img
+            src={porscheSrc}
+            alt="Rob Ragan"
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ${
+              clicked ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ filter: "none", mixBlendMode: "normal" }}
+          />
+        )}
       </div>
       <div className="mt-3 text-center">
         <span className="font-mono text-[10px] text-fg-faint tracking-wider">
