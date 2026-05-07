@@ -106,12 +106,6 @@ export interface Video {
 
 export const videos: Video[] = [
   {
-    title: "AI on the Radar: Securing AI-Driven Development",
-    youtubeId: "71mMFsRZn7M",
-    year: "2026",
-    venue: "Snyk / AI on the Radar",
-  },
-  {
     title: "The Promise and Perils of AI: Navigating Emerging Cyber Threats",
     youtubeId: "k8AbPDrew-w",
     year: "2025",
