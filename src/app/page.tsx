@@ -215,16 +215,25 @@ function BlogCard({
   excerpt,
   date,
   tags,
+  url,
+  publication,
   index,
 }: {
   title: string;
   excerpt: string;
   date: string;
   tags: string[];
+  url: string;
+  publication: string;
   index: string;
 }) {
   return (
-    <div className="card-editorial rounded-lg p-5">
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="card-editorial rounded-lg p-5 group block"
+    >
       <div className="flex items-center justify-between mb-3">
         <span className="font-meta text-accent">
           {new Date(date).toLocaleDateString("en-US", {
@@ -233,10 +242,10 @@ function BlogCard({
           })}
         </span>
         <span className="font-meta text-fg-faint">
-          {index}
+          {publication}
         </span>
       </div>
-      <h3 className="font-editorial text-lg text-fg mb-2 leading-snug">
+      <h3 className="font-editorial text-lg text-fg mb-2 leading-snug group-hover:text-accent transition-colors">
         {title}
       </h3>
       <p className="text-sm text-fg-muted leading-relaxed">
@@ -254,10 +263,10 @@ function BlogCard({
           ))}
         </div>
         <span className="font-meta text-accent">
-          Soon &rarr;
+          Read &rarr;
         </span>
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -480,9 +489,9 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-16">
         <SectionHeader number="05" title="Writing" href="/blog" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blogPosts.map((post, i) => (
+          {blogPosts.slice(0, 3).map((post, i) => (
             <BlogCard
-              key={post.slug}
+              key={post.url}
               {...post}
               index={`W${String(i + 1).padStart(2, "0")}`}
             />

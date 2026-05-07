@@ -317,41 +317,91 @@ export interface BlogPost {
   excerpt: string;
   date: string;
   tags: string[];
-  slug: string;
+  url: string;
+  publication: string;
 }
 
 export const blogPosts: BlogPost[] = [
   {
-    title: "Why Indirect Prompt Injection Is the Supply Chain Attack of AI Systems",
+    title: "Most Security Programs Test a Fraction of Their Applications. That Changes Today.",
     excerpt:
-      "Direct prompt injection gets the headlines, but indirect injection through retrieval-augmented generation is the systemic risk. How untrusted data flowing through tool-use chains creates attack surfaces that mirror traditional supply chain compromises.",
-    date: "2025-03-10",
-    tags: ["AI/LLM", "prompt injection"],
-    slug: "indirect-prompt-injection-supply-chain",
+      "Announcing Cosmos AI-powered application security testing. How organizations can finally test entire application portfolios at scale.",
+    date: "2026-02-09",
+    tags: ["AI", "automation"],
+    url: "https://bishopfox.com/blog/most-security-programs-test-a-fraction-of-their-applications-that-changes-today",
+    publication: "Bishop Fox",
   },
   {
-    title: "What 15 Years of Offensive Research Taught Me About AI System Failure Modes",
+    title: "The Promise and Perils of AI: Navigating Emerging Cyber Threats",
     excerpt:
-      "The patterns repeat: every new computing paradigm ships with the same category of vulnerability dressed in new abstractions. Here's what web app exploitation, cloud security, and now LLM testing have in common, and what it tells us about where AI systems will break next.",
-    date: "2025-01-15",
-    tags: ["AI/LLM", "methodology"],
-    slug: "offensive-research-ai-failure-modes",
+      "Recap of the Dark Reading panel. How AI simultaneously empowers defenders and attackers. Prompt injection, deepfakes, AI-driven social engineering.",
+    date: "2025-04-16",
+    tags: ["AI", "panel"],
+    url: "https://bishopfox.com/blog/dark-reading-panel-promise-perils-ai-navigating-emerging-cyber-threats-blog",
+    publication: "Bishop Fox",
   },
   {
-    title: "Tool-Use Attacks: When LLMs Have Real-World Capabilities",
+    title: "Loyal Employee... or Cybercriminal Accomplice?",
     excerpt:
-      "An LLM that can only generate text has a bounded blast radius. An LLM with tool access, code execution, or API credentials is a different threat model entirely. Lessons from testing agentic systems where model failures have consequences beyond the chat window.",
-    date: "2024-09-20",
-    tags: ["agentic AI", "red teaming"],
-    slug: "tool-use-attacks-agentic-ai",
+      "How cybercriminals recruit employees as insider threats and what organizations can do about it.",
+    date: "2023-12-01",
+    tags: ["insider threat", "social engineering"],
+    url: "https://www.darkreading.com/cyber-risk/loyal-employee-or-cybercriminal-accomplice-",
+    publication: "Dark Reading",
   },
   {
-    title: "The Cloud Exposure Problem Nobody Talks About",
+    title: "Get Organized Like a Villain",
     excerpt:
-      "Ephemeral cloud resources create dynamic attack surfaces that traditional scanners miss entirely. How SmogCloud changes the equation.",
-    date: "2023-11-20",
-    tags: ["cloud", "AWS"],
-    slug: "cloud-exposure-problem",
+      "FIN7 used Jira, HipChat, and JabbR to coordinate attacks like an agile engineering team. What offensive security teams can learn from it.",
+    date: "2019-12-12",
+    tags: ["threat intel", "red team"],
+    url: "https://www.darkreading.com/vulnerabilities-threats/get-organized-like-a-villain",
+    publication: "Dark Reading",
+  },
+  {
+    title: "Is Your Perimeter Inventory Leaving You Exposed? Why It's Time to Switch from IP to DNS",
+    excerpt:
+      "Modern dynamic cloud perimeters make IP-based inventories dangerously incomplete. Track internet-facing assets via DNS records instead.",
+    date: "2019-05-22",
+    tags: ["cloud", "DNS"],
+    url: "https://www.helpnetsecurity.com/2019/05/22/switch-from-ip-to-dns/",
+    publication: "Help Net Security",
+  },
+  {
+    title: "How End-User Devices Get Hacked: 8 Easy Ways",
+    excerpt:
+      "The most common attack vectors cybercriminals use to compromise end-user devices. From phishing with macro-laden Office docs to drive-by downloads.",
+    date: "2017-06-09",
+    tags: ["endpoints", "attacks"],
+    url: "https://www.darkreading.com/cyberattacks-data-breaches/how-end-user-devices-get-hacked-8-easy-ways",
+    publication: "Dark Reading",
+  },
+  {
+    title: "Social Engineering Defenses: Reducing The Human Element",
+    excerpt:
+      "Security awareness training is ineffective and expensive. Time to shift toward technical controls instead of relying on user behavior change.",
+    date: "2015-04-30",
+    tags: ["social engineering", "defense"],
+    url: "https://www.darkreading.com/cyber-risk/social-engineering-defenses-reducing-the-human-element",
+    publication: "Dark Reading",
+  },
+  {
+    title: "CloudBot: A Free, Malwareless Alternative To Traditional Botnets",
+    excerpt:
+      "1,000+ cloud service accounts across 150 providers. No malware required. Free, resilient botnets built entirely from trial accounts.",
+    date: "2014-08-01",
+    tags: ["cloud", "research"],
+    url: "https://www.darkreading.com/cyberattacks-data-breaches/cloudbot-a-free-malwareless-alternative-to-traditional-botnets",
+    publication: "Dark Reading",
+  },
+  {
+    title: "Five Steps To Help Repel The 'Lulz'",
+    excerpt:
+      "Practical defensive steps against LulzSec-style attacks. Google-hack yourself, scan your own systems, and hire someone to break in.",
+    date: "2011-06-01",
+    tags: ["defense", "practical"],
+    url: "https://www.darkreading.com/cyberattacks-data-breaches/five-steps-to-help-repel-the-lulz-",
+    publication: "Dark Reading",
   },
 ];
 

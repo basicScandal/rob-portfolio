@@ -23,9 +23,12 @@ export default function BlogPage() {
 
         <div className="mt-12 space-y-6">
           {blogPosts.map((post, i) => (
-            <article
-              key={post.slug}
-              className="card-editorial rounded-lg p-6 grid gap-4 sm:grid-cols-[100px_1fr]"
+            <a
+              key={post.url}
+              href={post.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card-editorial rounded-lg p-6 grid gap-4 sm:grid-cols-[100px_1fr] group block"
             >
               <div>
                 <span className="font-meta text-accent">
@@ -35,11 +38,11 @@ export default function BlogPage() {
                   })}
                 </span>
                 <p className="font-meta text-fg-faint mt-1">
-                  {String(i + 1).padStart(2, "0")} &middot; Essay
+                  {post.publication}
                 </p>
               </div>
               <div>
-                <h2 className="font-editorial text-xl text-fg leading-snug">
+                <h2 className="font-editorial text-xl text-fg leading-snug group-hover:text-accent transition-colors">
                   {post.title}
                 </h2>
                 <p className="text-sm text-fg-muted mt-2 leading-relaxed">
@@ -57,11 +60,11 @@ export default function BlogPage() {
                     ))}
                   </div>
                   <span className="font-meta text-accent">
-                    Soon &rarr;
+                    Read &rarr;
                   </span>
                 </div>
               </div>
-            </article>
+            </a>
           ))}
         </div>
 
