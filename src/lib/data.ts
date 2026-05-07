@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Rob Ragan",
-  title: "Rob Ragan - Security Researcher & AI Red Teamer",
+  title: "Rob Ragan - Security Researcher & Applied Research Leader",
   description:
     "Principal Technology Strategist at Bishop Fox. Security researcher, tool builder, and speaker at Black Hat, DEF CON, and RSA.",
   url: "https://theoradical.ai",
