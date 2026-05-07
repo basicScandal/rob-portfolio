@@ -56,7 +56,7 @@ export function Footer() {
               {[
                 { label: "About", href: "/about" },
                 { label: "Projects", href: "/projects" },
-                { label: "NEBULA:FOG", href: "/hackathons" },
+                { label: "Hackathons", href: "/hackathons" },
                 { label: "Talks", href: "/talks" },
                 { label: "Writing", href: "/blog" },
                 { label: "Contact", href: "/contact" },
