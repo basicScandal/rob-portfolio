@@ -316,24 +316,21 @@ export default function GalaxyPage() {
       <div
         className={`absolute top-0 left-0 right-0 p-4 transition-opacity duration-1000 ${showUI ? "opacity-100" : "opacity-0"}`}
       >
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <div>
-            <p className="font-mono text-[10px] tracking-[0.2em] text-green-400/60 uppercase">
-              Galactic Navigation // theoradical.ai
+        <div className="flex items-start justify-between max-w-6xl mx-auto gap-4">
+          <div className="min-w-0">
+            <p className="font-mono text-[9px] sm:text-[10px] tracking-[0.2em] text-green-400/60 uppercase">
+              Galactic Navigation
             </p>
-            <h1 className="font-mono text-lg text-green-400 mt-1">
-              RAGAN SYSTEMS CARTOGRAPHY
+            <h1 className="font-mono text-sm sm:text-lg text-green-400 mt-1">
+              RAGAN SYSTEMS
             </h1>
           </div>
-          <div className="text-right">
-            <p className="font-mono text-[10px] text-green-400/40">
-              STARDATE {new Date().toISOString().split("T")[0].replace(/-/g, ".")}
-            </p>
+          <div className="text-right shrink-0">
             <button
               onClick={() => router.push("/")}
-              className="font-mono text-[10px] text-green-400/60 hover:text-green-400 mt-1 transition-colors"
+              className="font-mono text-[10px] text-green-400/60 hover:text-green-400 transition-colors"
             >
-              [EXIT TO REALSPACE]
+              [EXIT]
             </button>
           </div>
         </div>
@@ -345,7 +342,7 @@ export default function GalaxyPage() {
           className={`absolute bottom-0 left-0 right-0 transition-all duration-300 ${showUI ? "opacity-100" : "opacity-0"}`}
         >
           <div className="max-w-6xl mx-auto p-4">
-            <div className="border border-green-400/20 bg-[#050510]/90 backdrop-blur rounded p-4 max-w-md">
+            <div className="border border-green-400/20 bg-[#050510]/90 backdrop-blur rounded p-4 max-w-md mx-auto sm:mx-0">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="font-mono text-[9px] tracking-[0.15em] text-green-400/40 uppercase">
@@ -393,9 +390,9 @@ export default function GalaxyPage() {
         </div>
       )}
 
-      {/* Legend */}
+      {/* Legend - hidden on mobile */}
       <div
-        className={`absolute top-20 right-4 transition-opacity duration-1000 ${showUI ? "opacity-100" : "opacity-0"}`}
+        className={`absolute top-20 right-4 transition-opacity duration-1000 hidden md:block ${showUI ? "opacity-100" : "opacity-0"}`}
       >
         <div className="border border-green-400/10 bg-[#050510]/80 rounded p-3">
           <p className="font-mono text-[9px] tracking-[0.15em] text-green-400/30 uppercase mb-2">
