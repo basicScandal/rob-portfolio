@@ -84,15 +84,27 @@ export default function TalksPage() {
                             with {talk.coPresenter}
                           </p>
                         )}
-                        <div className="flex gap-1.5 mt-3">
-                          {talk.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="font-meta text-[10px] px-2 py-0.5 rounded bg-accent/10 text-accent"
+                        <div className="flex items-center gap-3 mt-3">
+                          <div className="flex gap-1.5">
+                            {talk.tags.map((tag) => (
+                              <span
+                                key={tag}
+                                className="font-meta text-[10px] px-2 py-0.5 rounded bg-accent/10 text-accent"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                          {talk.slides && (
+                            <a
+                              href={talk.slides}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-meta text-[10px] text-accent hover:underline flex items-center gap-1"
                             >
-                              {tag}
-                            </span>
-                          ))}
+                              Slides <ExternalLink size={10} />
+                            </a>
+                          )}
                         </div>
                       </div>
                     </div>

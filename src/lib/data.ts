@@ -24,6 +24,7 @@ export interface Talk {
   title: string;
   coPresenter?: string;
   tags: string[];
+  slides?: string;
 }
 
 export const talks: Talk[] = [
@@ -52,6 +53,7 @@ export const talks: Talk[] = [
     title: "SmogCloud: Expose Yourself Without Insecurity",
     coPresenter: "Oscar Salazar",
     tags: ["cloud", "AWS"],
+    slides: "https://www.slideshare.net/slideshow/expose-yourself-without-insecurity-cloud-breach-patterns/224829553",
   },
   {
     year: "2019",
@@ -66,6 +68,7 @@ export const talks: Talk[] = [
     title: "CloudBots: Harvesting Crypto Coins Like a Botnet Farmer",
     coPresenter: "Oscar Salazar",
     tags: ["cloud", "research"],
+    slides: "https://www.slideshare.net/slideshow/cloudbots-harvesting-crypto-currency-like-a-botnet-farmer/37994151",
   },
   {
     year: "2012",
@@ -73,6 +76,7 @@ export const talks: Talk[] = [
     title: "Tenacious Diggity: Skinny Dippin' in a Sea of Bing",
     coPresenter: "Francis Brown",
     tags: ["OSINT", "tools"],
+    slides: "https://www.slideshare.net/slideshow/tencious-diggity-skinny-dippin-in-a-sea-of-bing/13816252",
   },
   {
     year: "2011",
@@ -80,6 +84,7 @@ export const talks: Talk[] = [
     title: "Pulp Google Hacking: The Next Generation Search Engine Hacking Arsenal",
     coPresenter: "Fran Brown",
     tags: ["OSINT", "tools"],
+    slides: "https://www.slideshare.net/slideshow/black-hat-2011-pulp-google-hacking/8829971",
   },
   {
     year: "2010",
@@ -87,18 +92,21 @@ export const talks: Talk[] = [
     title: "Lord of the Bing: Taking Back Search Engine Hacking",
     coPresenter: "Francis Brown",
     tags: ["OSINT", "tools"],
+    slides: "https://www.slideshare.net/slideshow/lord-of-the-bing-black-hat-usa-2010/4929285",
   },
   {
     year: "2009",
     conference: "OuterZ0ne",
     title: "IDS/WAF Evasion Tactics & HTTP 100 Snort Bypass",
     tags: ["evasion", "research"],
+    slides: "https://www.slideshare.net/slideshow/filter-evasion-houdini-on-the-wire/1127990",
   },
   {
     year: "2008",
     conference: "SummerCon",
     title: "Static Analysis: First Solo Conference Talk",
     tags: ["static analysis", "tools"],
+    slides: "https://www.slideshare.net/slideshow/static-analysis-the-art-of-fighting-without-fighting/1127989",
   },
 ];
 
