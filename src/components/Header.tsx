@@ -11,7 +11,7 @@ const navItems = [
   { href: "/", label: "Home", num: "00" },
   { href: "/about", label: "About", num: "01" },
   { href: "/projects", label: "Projects", num: "02" },
-  { href: "/hackathons", label: "NEBULA:FOG", num: "03" },
+  { href: "/hackathons", label: "Hackathon", num: "03" },
   { href: "/talks", label: "Talks", num: "04" },
   { href: "/blog", label: "Writing", num: "05" },
   { href: "/contact", label: "Contact", num: "06" },

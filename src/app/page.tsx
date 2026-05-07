@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { stats, talks, projects, blogPosts } from "@/lib/data";
+import robPhoto from "../../public/rob-ragan-2024.jpg";
 
 function SectionHeader({
   number,
@@ -64,34 +65,34 @@ function TerminalBlock() {
         <div className="terminal-dot bg-yellow-500" />
         <div className="terminal-dot bg-green-500" />
         <span className="ml-2 text-[10px] text-gray-500 font-mono">
-          ~/research/llm-testing
+          ~/agents/alpharius
         </span>
       </div>
       <div className="p-4 sm:p-6 space-y-2 text-sm">
         <p>
           <span className="text-green-400">$</span>{" "}
           <span className="text-gray-300">
-            cat findings/prompt-injection.md
+            python -m alpharius --target app.local
           </span>
         </p>
         <p className="text-amber-400 mt-3">
-          # LLM Integration Testing Findings
+          [*] Alpharius v0.3.0 // Autonomous Security Agent
         </p>
         <p className="text-gray-400">
-          ## Vulnerability: Indirect Prompt Injection
+          [+] Crawling target... 47 endpoints found
+        </p>
+        <p className="text-gray-400">
+          [+] Focus: idor, business_logic, auth_bypass
         </p>
         <p className="text-gray-500 text-xs mt-1">
-          &gt; Severity: HIGH | CVSS: 8.1
+          &gt; Budget: 30min | Cost cap: $2.00
         </p>
-        <p className="text-gray-500 text-xs">
-          &gt; Category: Input Validation
-        </p>
-        <p className="text-gray-400 mt-3 text-xs leading-relaxed">
-          When user-supplied content is passed to the LLM
+        <p className="text-green-400 mt-3 text-xs leading-relaxed">
+          FINDING: IDOR on /api/v2/users/&#123;id&#125;/profile
           <br />
-          without sanitization, an attacker can embed
+          Any authenticated user can read other users&apos;
           <br />
-          instructions that override system prompts...
+          profiles by iterating the ID parameter...
         </p>
         <p className="mt-3">
           <span className="text-green-400">$</span>{" "}
@@ -253,7 +254,7 @@ function BlogCard({
           ))}
         </div>
         <span className="font-meta text-accent">
-          Read &rarr;
+          Soon &rarr;
         </span>
       </div>
     </div>
@@ -291,11 +292,10 @@ export default function Home() {
               >
                 Bishop Fox
               </a>
-              . I break things to make them safer. I&apos;ve spent 15+ years
-              going from search engine hacking to cloud security to adversarial
-              testing of AI systems. I build the tools and methodology that make
-              security a prerequisite, not an afterthought, for deploying
-              powerful technology.
+              . I lead a team of agentic engineers and I research and design
+              cutting-edge offensive security agents that attack web
+              applications and other systems. 15+ years of breaking things so
+              they can be built back stronger.
             </p>
             <div className="flex gap-3 mt-8">
               <Link
@@ -318,12 +318,11 @@ export default function Home() {
             <div className="relative">
               <div className="portrait-duotone w-64 h-72 sm:w-72 sm:h-80 rounded-lg overflow-hidden bg-gradient-to-br from-accent/20 to-charcoal-light">
                 <Image
-                  src="/rob-ragan-2024.jpg"
+                  src={robPhoto}
                   alt="Rob Ragan"
-                  width={800}
-                  height={800}
                   className="w-full h-full object-cover object-top"
                   priority
+                  placeholder="blur"
                 />
               </div>
               <div className="mt-3 text-center">
@@ -351,41 +350,39 @@ export default function Home() {
         <div className="grid gap-8 lg:grid-cols-[1.3fr_1fr] items-start">
           <div>
             <span className="font-meta text-accent">
-              Active Project // 2023-Present
+              Active Project // 2025-Present
             </span>
             <h3 className="font-editorial text-2xl mt-2 text-fg">
-              LLM Testing Findings
+              Alpharius
             </h3>
             <p className="mt-3 text-fg-muted leading-relaxed">
-              Open-source templates and methodology for systematically
-              documenting vulnerabilities in enterprise LLM integrations. This
-              project maintains a curated registry of every open-source LLM
-              testing tool available and provides structured finding templates
-              that security teams can use during AI/LLM penetration tests.
+              LLM-powered autonomous security testing agent that finds the
+              vulnerabilities traditional scanners miss. Business logic flaws,
+              IDOR, race conditions, authorization bypasses. The stuff that
+              requires understanding what an application is supposed to do, not
+              just pattern matching against known signatures. Built on Claude
+              Agent SDK.
             </p>
             <ul className="mt-4 space-y-2 text-sm text-fg-muted">
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Prompt injection, indirect injection, and tool-use attack
-                patterns
+                Finds semantic vulnerabilities that need application context
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Curated open-source testing tool registry with coverage analysis
+                Time and cost budget controls for autonomous testing
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Structured methodology for evaluating agentic AI system
-                boundaries
+                Focus areas: IDOR, business logic, auth bypass, race conditions
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                Reproducible finding templates that translate offensive research
-                into defensive remediations
+                Built on Claude Agent SDK with Docker-based test targets
               </li>
             </ul>
             <a
-              href="https://github.com/BishopFox/llm-testing-findings"
+              href="https://github.com/BishopFox/Alpharius"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-6 font-meta text-accent hover:underline"

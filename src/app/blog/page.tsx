@@ -57,7 +57,7 @@ export default function BlogPage() {
                     ))}
                   </div>
                   <span className="font-meta text-accent">
-                    Read &rarr;
+                    Soon &rarr;
                   </span>
                 </div>
               </div>

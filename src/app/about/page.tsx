@@ -40,18 +40,18 @@ export default function AboutPage() {
             My research path tells the story: search engine hacking (Black Hat
             2010, 2011; DEF CON 18, 20), then cloud security exploitation
             (Black Hat 2014, 2020), and now{" "}
-            <strong>adversarial testing of AI systems</strong>. Right now
-            I&apos;m focused on how AI integrations actually fail under
-            pressure. The behavioral failures that show up when models hit
-            inputs they weren&apos;t built for. The downstream effects when
-            those systems have real-world authority and something goes wrong.
+            <strong>leading a team of agentic engineers building AI-powered
+            offensive security agents</strong>. I research and design
+            cutting-edge agents that attack web applications and other systems.
+            The kind of work where you&apos;re teaching AI to think like a
+            pentester and then watching it find things humans missed.
           </p>
           <p>
             The most valuable security work I&apos;ve done sits at the
             intersection of offensive expertise and genuine curiosity about how
             systems behave at scale. Finding a single vulnerability matters less
             than understanding the class of problem it represents, and building
-            tooling that helps others find the next ten.
+            the agents and tooling that find the next ten automatically.
           </p>
           <p>
             Contributing author to{" "}

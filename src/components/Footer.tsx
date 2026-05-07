@@ -53,18 +53,23 @@ export function Footer() {
           <div>
             <span className="section-number">Navigate</span>
             <ul className="mt-3 space-y-2">
-              {["About", "Projects", "Talks", "Writing", "Contact"].map(
-                (item) => (
-                  <li key={item}>
-                    <Link
-                      href={`/${item.toLowerCase()}`}
-                      className="text-sm text-fg-muted hover:text-accent transition-colors"
-                    >
-                      {item}
-                    </Link>
-                  </li>
-                )
-              )}
+              {[
+                { label: "About", href: "/about" },
+                { label: "Projects", href: "/projects" },
+                { label: "NEBULA:FOG", href: "/hackathons" },
+                { label: "Talks", href: "/talks" },
+                { label: "Writing", href: "/blog" },
+                { label: "Contact", href: "/contact" },
+              ].map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-fg-muted hover:text-accent transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
