@@ -127,11 +127,10 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
     if (!ctx) return;
 
     const syncSize = () => {
-      // Use getBoundingClientRect for the actual rendered size -
-      // works correctly in Arc browser where sidebar offsets the content area
-      const rect = canvas.getBoundingClientRect();
-      const w = Math.round(rect.width) || window.innerWidth;
-      const h = Math.round(rect.height) || window.innerHeight;
+      // Use documentElement.clientWidth which excludes scrollbars and
+      // works correctly in Arc browser with sidebar
+      const w = document.documentElement.clientWidth || window.innerWidth;
+      const h = document.documentElement.clientHeight || window.innerHeight;
       if (canvas.width !== w || canvas.height !== h) {
         canvas.width = w;
         canvas.height = h;
@@ -154,10 +153,9 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
-      // Sync canvas buffer to actual rendered size every frame (Arc browser compat)
-      const rect = canvas.getBoundingClientRect();
-      const vw = Math.round(rect.width) || window.innerWidth;
-      const vh = Math.round(rect.height) || window.innerHeight;
+      // Sync canvas buffer to viewport every frame
+      const vw = document.documentElement.clientWidth || window.innerWidth;
+      const vh = document.documentElement.clientHeight || window.innerHeight;
       if (canvas.width !== vw || canvas.height !== vh) {
         canvas.width = vw;
         canvas.height = vh;
@@ -700,14 +698,15 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-[9999]"
       style={{
-        // Always render but hide when inactive - this ensures canvas has
-        // correct viewport dimensions before the animation fires
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        zIndex: 9999,
         pointerEvents: active ? "all" : "none",
         opacity: active ? 1 : 0,
-        // Use opacity only (not visibility:hidden) so the element
-        // remains in the layout and canvas dims stay accurate
         transition: "opacity 0.1s",
       }}
     />
