@@ -57,9 +57,17 @@ export default function AboutPage() {
             Contributing author to{" "}
             <em>Hacking Exposed Web Applications, 3rd Edition</em> (McGraw-Hill).
             Spoken at Black Hat, DEF CON, RSA, BSides, and a bunch of enterprise
-            security summits. I maintain several open-source tools including
-            SmogCloud (AWS exposure detection) and the LLM Testing Findings
-            repository.
+            security summits. Recent projects include{" "}
+            <a href="https://github.com/basicScandal/arbiter" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Arbiter
+            </a>
+            , an AI judge agent that scored 25 live hackathon demos using a
+            multi-model ensemble, and{" "}
+            <a href="https://starlog.is" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+              Starlog
+            </a>
+            , a publication that turns GitHub stars into deep dives on offensive
+            security tools and AI agents.
           </p>
           <p>
             When I&apos;m not breaking AI systems I&apos;m building cyber decks,
