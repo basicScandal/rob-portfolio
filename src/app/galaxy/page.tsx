@@ -125,9 +125,20 @@ export default function GalaxyPage() {
   const router = useRouter();
   const frameRef = useRef<number>(0);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
+  // Refs for render loop - avoids tearing down animation on state changes
+  const hoveredRef = useRef<StarSystem | null>(null);
+  const selectedRef = useRef<StarSystem | null>(null);
+  const warpTargetRef = useRef<StarSystem | null>(null);
   const starsRef = useRef<{ x: number; y: number; s: number; phase: number; color: string; layer: number }[]>([]);
   const dustRef = useRef<{ x: number; y: number; vx: number; vy: number; s: number; alpha: number }[]>([]);
   const laneParticlesRef = useRef<{ laneIdx: number; t: number; speed: number; size: number }[]>([]);
+  // Ship state: position (0-1 normalized), target, travel progress
+  const shipRef = useRef({ x: 0.5, y: 0.45, targetX: 0.5, targetY: 0.45, traveling: false, progress: 0, fromX: 0.5, fromY: 0.45, angle: 0 });
+
+  // Sync state to refs so the animation loop can read them without restarting
+  hoveredRef.current = hoveredSystem;
+  selectedRef.current = selectedSystem;
+  warpTargetRef.current = warpTarget;
 
   // Generate background stars + dust + lane particles
   useEffect(() => {
@@ -197,19 +208,23 @@ export default function GalaxyPage() {
     setTimeout(() => setShowUI(true), 500);
   }, []);
 
-  // Canvas rendering
+  // Canvas rendering - runs once, reads state from refs
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    const syncSize = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      if (canvas.width !== vw || canvas.height !== vh) {
+        canvas.width = vw;
+        canvas.height = vh;
+      }
     };
-    resize();
-    window.addEventListener("resize", resize);
+    syncSize();
+    window.addEventListener("resize", syncSize);
 
     // Pre-compute nebula positions (stable across frames)
     const nebulae = [
@@ -221,13 +236,20 @@ export default function GalaxyPage() {
       { cx: 0.55, cy: 0.8, r: 0.35, color: "rgba(30,60,100," },  // deep blue
     ];
 
-    let time = 0;
+    const startTime = performance.now();
     const animate = () => {
-      time += 0.016;
+      // Sync canvas size every frame to catch layout shifts
+      syncSize();
+
+      const time = (performance.now() - startTime) / 1000;
       const w = canvas.width;
       const h = canvas.height;
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;
+
+      // Read current state from refs (no dependency needed)
+      const hoveredSystem = hoveredRef.current;
+      const selectedSystem = selectedRef.current;
 
       // === 1. Background fill ===
       ctx.fillStyle = "#050810";
@@ -510,6 +532,84 @@ export default function GalaxyPage() {
         ctx.fill();
       });
 
+      // === 7. Ship ===
+      const ship = shipRef.current;
+      if (ship.traveling) {
+        ship.progress = Math.min(1, ship.progress + 0.008);
+        // Ease in-out
+        const t = ship.progress < 0.5
+          ? 2 * ship.progress * ship.progress
+          : 1 - Math.pow(-2 * ship.progress + 2, 2) / 2;
+        ship.x = ship.fromX + (ship.targetX - ship.fromX) * t;
+        ship.y = ship.fromY + (ship.targetY - ship.fromY) * t;
+        // Update angle toward target
+        ship.angle = Math.atan2(ship.targetY - ship.fromY, ship.targetX - ship.fromX);
+        if (ship.progress >= 1) {
+          ship.traveling = false;
+          ship.x = ship.targetX;
+          ship.y = ship.targetY;
+        }
+      }
+
+      // Draw ship (small triangular craft)
+      const shipX = ship.x * w;
+      const shipY = ship.y * h;
+      const shipAngle = ship.angle;
+      const shipSize = 7;
+
+      ctx.save();
+      ctx.translate(shipX, shipY);
+      ctx.rotate(shipAngle);
+
+      // Engine glow trail (when traveling)
+      if (ship.traveling) {
+        const trailGrad = ctx.createLinearGradient(-shipSize * 4, 0, -shipSize, 0);
+        trailGrad.addColorStop(0, "transparent");
+        trailGrad.addColorStop(1, "rgba(80,200,255,0.4)");
+        ctx.strokeStyle = trailGrad;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(-shipSize * 4, 0);
+        ctx.lineTo(-shipSize, 0);
+        ctx.stroke();
+
+        // Engine flicker
+        const flicker = Math.sin(time * 30) * 0.3 + 0.7;
+        ctx.fillStyle = `rgba(80,200,255,${0.6 * flicker})`;
+        ctx.beginPath();
+        ctx.arc(-shipSize * 0.8, 0, 2.5 * flicker, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Ship body - sleek triangle
+      ctx.fillStyle = "rgba(200,220,255,0.9)";
+      ctx.beginPath();
+      ctx.moveTo(shipSize, 0);                    // nose
+      ctx.lineTo(-shipSize * 0.7, -shipSize * 0.5); // top wing
+      ctx.lineTo(-shipSize * 0.4, 0);              // body notch
+      ctx.lineTo(-shipSize * 0.7, shipSize * 0.5);  // bottom wing
+      ctx.closePath();
+      ctx.fill();
+
+      // Cockpit highlight
+      ctx.fillStyle = "rgba(80,200,255,0.6)";
+      ctx.beginPath();
+      ctx.arc(shipSize * 0.2, 0, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Ship outline glow
+      ctx.strokeStyle = "rgba(80,200,255,0.3)";
+      ctx.lineWidth = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(shipSize, 0);
+      ctx.lineTo(-shipSize * 0.7, -shipSize * 0.5);
+      ctx.lineTo(-shipSize * 0.4, 0);
+      ctx.lineTo(-shipSize * 0.7, shipSize * 0.5);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.restore();
+
       // === 8. Vignette (draw last!) ===
       const diag = Math.sqrt(w * w + h * h) / 2;
       const vig = ctx.createRadialGradient(w / 2, h / 2, diag * 0.3, w / 2, h / 2, diag);
@@ -526,23 +626,27 @@ export default function GalaxyPage() {
     frameRef.current = requestAnimationFrame(animate);
     return () => {
       cancelAnimationFrame(frameRef.current);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", syncSize);
     };
-  }, [hoveredSystem, selectedSystem, warpTarget]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Runs once - reads state from refs to avoid teardown on hover/select
 
   // Mouse interaction
   const handleMouseMove = useCallback(
     (e: React.MouseEvent) => {
       const rect = canvasRef.current?.getBoundingClientRect();
-      if (!rect) return;
+      if (!rect || rect.width === 0 || rect.height === 0) return;
       const mx = (e.clientX - rect.left) / rect.width;
       const my = (e.clientY - rect.top) / rect.height;
       mouseRef.current = { x: mx, y: my };
 
+      // Hit detection with aspect-ratio-aware radius
+      // Use pixel distance: convert system pos and mouse pos to pixels, then compare
+      const hitRadiusPx = 35; // pixels
       const found = SYSTEMS.find((sys) => {
-        const dx = sys.x - mx;
-        const dy = sys.y - my;
-        return Math.sqrt(dx * dx + dy * dy) < 0.04;
+        const dxPx = (sys.x - mx) * rect.width;
+        const dyPx = (sys.y - my) * rect.height;
+        return Math.sqrt(dxPx * dxPx + dyPx * dyPx) < hitRadiusPx;
       });
       setHoveredSystem(found || null);
     },
@@ -553,6 +657,18 @@ export default function GalaxyPage() {
     (e: React.MouseEvent) => {
       if (hoveredSystem) {
         setSelectedSystem(hoveredSystem);
+        // Start ship travel to the clicked system
+        const ship = shipRef.current;
+        if (ship.x !== hoveredSystem.x || ship.y !== hoveredSystem.y) {
+          ship.fromX = ship.x;
+          ship.fromY = ship.y;
+          ship.targetX = hoveredSystem.x;
+          ship.targetY = hoveredSystem.y;
+          ship.progress = 0;
+          ship.traveling = true;
+          // Calculate angle from current to target
+          ship.angle = Math.atan2(hoveredSystem.y - ship.y, hoveredSystem.x - ship.x);
+        }
       } else {
         setSelectedSystem(null);
       }
