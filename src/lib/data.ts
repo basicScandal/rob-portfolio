@@ -78,6 +78,23 @@ export const talks: Talk[] = [
     slides: "https://www.slideshare.net/bishopfox/ferris-buellers-guide-to-abuse-domain-permutations",
   },
   {
+    year: "2019",
+    conference: "OWASP AppSec Cali",
+    title: "Pose a Threat: Perceptual Analysis for Bug Hunters",
+    coPresenter: "Oscar Salazar",
+    tags: ["visual analysis", "automation"],
+    video: "https://www.youtube.com/watch?v=unAQCEkOtFk",
+  },
+  {
+    year: "2015",
+    conference: "BSides Pittsburgh",
+    title: "Never Surrender: Reducing Social Engineering Risk",
+    coPresenter: "Christina Camilleri",
+    tags: ["social engineering", "defense"],
+    slides: "https://www.slideshare.net/slideshow/bsidespgh-never-surrender-20150619/49698144",
+    video: "https://www.youtube.com/watch?v=fIQdEEN0p5k",
+  },
+  {
     year: "2014",
     conference: "Black Hat USA",
     title: "CloudBots: Harvesting Crypto Coins Like a Botnet Farmer",
