@@ -55,6 +55,11 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
   const bassRef = useRef(0);
   // Track last known dimensions to detect layout shifts
   const dimsRef = useRef({ w: 0, h: 0 });
+  // Stable refs for props so the animation loop never restarts
+  const colorRef = useRef(color);
+  const onCompleteRef = useRef(onComplete);
+  colorRef.current = color;
+  onCompleteRef.current = onComplete;
 
   const initParticles = useCallback((w: number, h: number) => {
     const particles: Particle[] = [];
@@ -137,7 +142,6 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
       return { r, g, b };
     };
 
-    const rgb = hexToRgb(color);
     let lastTime = performance.now();
 
     const animate = (now: number) => {
@@ -158,6 +162,7 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
 
       const w = canvas.width;
       const h = canvas.height;
+      const rgb = hexToRgb(colorRef.current);
       // Base center is always exact viewport center; shake is additive offset only
       const baseCx = w / 2;
       const baseCy = h / 2;
@@ -187,7 +192,7 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
         ctx.fillRect(0, 0, w, h);
         if (flashProgress >= 1 && !completedRef.current) {
           completedRef.current = true;
-          onComplete?.();
+          onCompleteRef.current?.();
         }
         frameRef.current = requestAnimationFrame(animate);
         return;
@@ -683,7 +688,8 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
       cancelAnimationFrame(frameRef.current);
       window.removeEventListener("resize", resize);
     };
-  }, [color, initParticles, generateLightning, onComplete]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Runs once - reads props from refs to avoid teardown
 
   return (
     <canvas
