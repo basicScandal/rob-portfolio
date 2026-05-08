@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { WarpDrive } from "./WarpDrive";
@@ -10,9 +11,11 @@ export function PortraitEasterEgg() {
   const [clicked, setClicked] = useState(false);
   const [warpActive, setWarpActive] = useState(false);
   const [porscheSrc, setPorscheSrc] = useState("");
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    setMounted(true);
     const prefix = window.location.pathname.includes("/rob-portfolio") ? "/rob-portfolio" : "";
     setPorscheSrc(`${prefix}/rob-porsche.png`);
     const img = new window.Image();
@@ -35,11 +38,16 @@ export function PortraitEasterEgg() {
 
   return (
     <div className="relative">
-      <WarpDrive
-        active={warpActive}
-        color="#39d353"
-        onComplete={handleWarpComplete}
-      />
+      {/* Portal WarpDrive to document.body so ancestor transforms
+          (animate-fade-in-up) don't break position:fixed */}
+      {mounted && createPortal(
+        <WarpDrive
+          active={warpActive}
+          color="#39d353"
+          onComplete={handleWarpComplete}
+        />,
+        document.body
+      )}
 
       <div
         onClick={handleClick}

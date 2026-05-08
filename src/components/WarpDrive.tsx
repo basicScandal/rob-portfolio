@@ -126,14 +126,20 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      // Always re-init on resize so particles use correct center
-      initParticles(canvas.width, canvas.height);
+    const syncSize = () => {
+      // Use getBoundingClientRect for the actual rendered size -
+      // works correctly in Arc browser where sidebar offsets the content area
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.round(rect.width) || window.innerWidth;
+      const h = Math.round(rect.height) || window.innerHeight;
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        initParticles(w, h);
+      }
     };
-    resize();
-    window.addEventListener("resize", resize);
+    syncSize();
+    window.addEventListener("resize", syncSize);
 
     const hexToRgb = (hex: string) => {
       const r = parseInt(hex.slice(1, 3), 16);
@@ -148,13 +154,13 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
-      // Force canvas to cover full viewport on every frame to catch any layout shifts
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
+      // Sync canvas buffer to actual rendered size every frame (Arc browser compat)
+      const rect = canvas.getBoundingClientRect();
+      const vw = Math.round(rect.width) || window.innerWidth;
+      const vh = Math.round(rect.height) || window.innerHeight;
       if (canvas.width !== vw || canvas.height !== vh) {
         canvas.width = vw;
         canvas.height = vh;
-        // Re-init particles if dims changed while active
         if (activeRef.current) {
           initParticles(vw, vh);
         }
@@ -686,7 +692,7 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
 
     return () => {
       cancelAnimationFrame(frameRef.current);
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", syncSize);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Runs once - reads props from refs to avoid teardown

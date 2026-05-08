@@ -216,8 +216,9 @@ export default function GalaxyPage() {
     if (!ctx) return;
 
     const syncSize = () => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
+      const rect = canvas.getBoundingClientRect();
+      const vw = Math.round(rect.width) || window.innerWidth;
+      const vh = Math.round(rect.height) || window.innerHeight;
       if (canvas.width !== vw || canvas.height !== vh) {
         canvas.width = vw;
         canvas.height = vh;
