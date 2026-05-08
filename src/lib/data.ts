@@ -34,7 +34,6 @@ export const talks: Talk[] = [
     year: "2026",
     conference: "Decibel RSAC Founder Festival",
     title: "Every 3 Months, It's a New World: Building Agents That Build Experiences",
-    coPresenter: "Caleb Sima, Ariel Herbert-Voss, Will Pearce, Casey Ellis",
     tags: ["agentic AI", "coding agents", "RSA week"],
     slides: "/slides-decibel-2026/",
   },
