@@ -54,6 +54,14 @@ export const talks: Talk[] = [
     video: "https://www.youtube.com/watch?v=bpw0zopn1H0",
   },
   {
+    year: "2022",
+    conference: "BSidesSF",
+    title: "My Precious PII: Data Leakage from Language Models",
+    coPresenter: "Aashiq Ramachandran",
+    tags: ["AI safety", "PII leakage"],
+    link: "https://github.com/basicScandal/my-precious-pii",
+  },
+  {
     year: "2020",
     conference: "Black Hat USA",
     title: "SmogCloud: Expose Yourself Without Insecurity",

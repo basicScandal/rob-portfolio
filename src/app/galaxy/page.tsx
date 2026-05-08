@@ -216,9 +216,8 @@ export default function GalaxyPage() {
     if (!ctx) return;
 
     const syncSize = () => {
-      const rect = canvas.getBoundingClientRect();
-      const vw = Math.round(rect.width) || window.innerWidth;
-      const vh = Math.round(rect.height) || window.innerHeight;
+      const vw = document.documentElement.clientWidth || window.innerWidth;
+      const vh = document.documentElement.clientHeight || window.innerHeight;
       if (canvas.width !== vw || canvas.height !== vh) {
         canvas.width = vw;
         canvas.height = vh;
@@ -693,6 +692,7 @@ export default function GalaxyPage() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0"
+        style={{ width: "100%", height: "100%" }}
         onMouseMove={handleMouseMove}
         onClick={handleClick}
       />
