@@ -122,21 +122,78 @@ export default function GalaxyPage() {
   const [selectedSystem, setSelectedSystem] = useState<StarSystem | null>(null);
   const [warpTarget, setWarpTarget] = useState<StarSystem | null>(null);
   const [showUI, setShowUI] = useState(false);
-  const [stars, setStars] = useState<{ x: number; y: number; s: number; b: number; speed: number }[]>([]);
   const router = useRouter();
   const frameRef = useRef<number>(0);
-  const mouseRef = useRef({ x: 0, y: 0 });
+  const mouseRef = useRef({ x: 0.5, y: 0.5 });
+  const starsRef = useRef<{ x: number; y: number; s: number; phase: number; color: string; layer: number }[]>([]);
+  const dustRef = useRef<{ x: number; y: number; vx: number; vy: number; s: number; alpha: number }[]>([]);
+  const laneParticlesRef = useRef<{ laneIdx: number; t: number; speed: number; size: number }[]>([]);
 
-  // Generate background stars
+  // Generate background stars + dust + lane particles
   useEffect(() => {
-    const s = Array.from({ length: 400 }, () => ({
-      x: Math.random(),
-      y: Math.random(),
-      s: Math.random() * 2 + 0.5,
-      b: Math.random(),
-      speed: Math.random() * 0.0003 + 0.0001,
-    }));
-    setStars(s);
+    // 3 layers of stars
+    const allStars: typeof starsRef.current = [];
+    // Layer 0: distant tiny (800)
+    for (let i = 0; i < 800; i++) {
+      const r = Math.random();
+      allStars.push({
+        x: Math.random(), y: Math.random(),
+        s: Math.random() * 0.8 + 0.3,
+        phase: Math.random() * Math.PI * 2,
+        color: r < 0.7 ? `rgba(255,255,255,${Math.random() * 0.3 + 0.3})`
+             : r < 0.9 ? `rgba(180,200,255,${Math.random() * 0.3 + 0.2})`
+             : `rgba(255,200,150,${Math.random() * 0.2 + 0.2})`,
+        layer: 0,
+      });
+    }
+    // Layer 1: medium (150)
+    for (let i = 0; i < 150; i++) {
+      const r = Math.random();
+      allStars.push({
+        x: Math.random(), y: Math.random(),
+        s: Math.random() * 1.2 + 0.8,
+        phase: Math.random() * Math.PI * 2,
+        color: r < 0.6 ? `rgba(220,230,255,${Math.random() * 0.3 + 0.5})`
+             : r < 0.85 ? `rgba(180,200,255,${Math.random() * 0.3 + 0.4})`
+             : `rgba(255,210,160,${Math.random() * 0.3 + 0.3})`,
+        layer: 1,
+      });
+    }
+    // Layer 2: bright foreground (40) with diffraction spikes
+    for (let i = 0; i < 40; i++) {
+      allStars.push({
+        x: Math.random(), y: Math.random(),
+        s: Math.random() * 1.5 + 1.5,
+        phase: Math.random() * Math.PI * 2,
+        color: `rgba(240,245,255,${Math.random() * 0.3 + 0.6})`,
+        layer: 2,
+      });
+    }
+    starsRef.current = allStars;
+
+    // Ambient dust particles
+    const dust: typeof dustRef.current = [];
+    for (let i = 0; i < 120; i++) {
+      dust.push({
+        x: Math.random(), y: Math.random(),
+        vx: (Math.random() - 0.5) * 0.00005,
+        vy: (Math.random() - 0.5) * 0.00005,
+        s: Math.random() * 1.5 + 0.5,
+        alpha: Math.random() * 0.12 + 0.03,
+      });
+    }
+    dustRef.current = dust;
+
+    // Lane particles
+    const lp: typeof laneParticlesRef.current = [];
+    STAR_LANES.forEach((_, idx) => {
+      const count = 3 + Math.floor(Math.random() * 3);
+      for (let i = 0; i < count; i++) {
+        lp.push({ laneIdx: idx, t: Math.random(), speed: Math.random() * 0.003 + 0.001, size: Math.random() + 0.5 });
+      }
+    });
+    laneParticlesRef.current = lp;
+
     setTimeout(() => setShowUI(true), 500);
   }, []);
 
@@ -154,107 +211,314 @@ export default function GalaxyPage() {
     resize();
     window.addEventListener("resize", resize);
 
+    // Pre-compute nebula positions (stable across frames)
+    const nebulae = [
+      { cx: 0.2, cy: 0.3, r: 0.45, color: "rgba(45,27,105," },   // deep purple
+      { cx: 0.75, cy: 0.65, r: 0.35, color: "rgba(60,160,130," }, // teal
+      { cx: 0.5, cy: 0.15, r: 0.3, color: "rgba(50,80,200," },   // blue
+      { cx: 0.85, cy: 0.25, r: 0.25, color: "rgba(180,100,30," }, // amber
+      { cx: 0.1, cy: 0.75, r: 0.3, color: "rgba(80,40,120," },   // violet
+      { cx: 0.55, cy: 0.8, r: 0.35, color: "rgba(30,60,100," },  // deep blue
+    ];
+
     let time = 0;
     const animate = () => {
       time += 0.016;
       const w = canvas.width;
       const h = canvas.height;
+      const mx = mouseRef.current.x;
+      const my = mouseRef.current.y;
 
-      // Clear
-      ctx.fillStyle = "#050510";
+      // === 1. Background fill ===
+      ctx.fillStyle = "#050810";
       ctx.fillRect(0, 0, w, h);
 
-      // Subtle nebula clouds
-      const grd = ctx.createRadialGradient(w * 0.3, h * 0.4, 0, w * 0.3, h * 0.4, w * 0.4);
-      grd.addColorStop(0, "rgba(57,211,83,0.03)");
-      grd.addColorStop(1, "transparent");
-      ctx.fillStyle = grd;
-      ctx.fillRect(0, 0, w, h);
+      // === 2. Nebula clouds with parallax ===
+      nebulae.forEach((n) => {
+        const parallax = 0.15;
+        const nx = (n.cx + (mx - 0.5) * parallax) * w;
+        const ny = (n.cy + (my - 0.5) * parallax) * h;
+        const nr = n.r * Math.max(w, h);
+        const grd = ctx.createRadialGradient(nx, ny, 0, nx, ny, nr);
+        grd.addColorStop(0, n.color + "0.10)");
+        grd.addColorStop(0.4, n.color + "0.06)");
+        grd.addColorStop(1, "transparent");
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, w, h);
+      });
 
-      const grd2 = ctx.createRadialGradient(w * 0.7, h * 0.6, 0, w * 0.7, h * 0.6, w * 0.3);
-      grd2.addColorStop(0, "rgba(167,139,250,0.02)");
-      grd2.addColorStop(1, "transparent");
-      ctx.fillStyle = grd2;
-      ctx.fillRect(0, 0, w, h);
+      // Dust lanes (subtle bezier streaks)
+      ctx.strokeStyle = "rgba(200,220,255,0.015)";
+      ctx.lineWidth = 60;
+      ctx.beginPath();
+      ctx.moveTo(w * 0.0, h * 0.3);
+      ctx.quadraticCurveTo(w * 0.4, h * 0.35, w * 1.0, h * 0.25);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(w * 0.1, h * 0.7);
+      ctx.quadraticCurveTo(w * 0.6, h * 0.65, w * 0.9, h * 0.8);
+      ctx.stroke();
 
-      // Background stars
+      // === 3. Background star field with parallax ===
+      const stars = starsRef.current;
       stars.forEach((star) => {
-        const twinkle = Math.sin(time * 2 + star.b * 100) * 0.3 + 0.7;
-        ctx.fillStyle = `rgba(200,220,255,${twinkle * 0.8})`;
+        const parallaxMul = star.layer === 0 ? 0.15 : star.layer === 1 ? 0.25 : 0.35;
+        const sx = (star.x + (mx - 0.5) * parallaxMul) * w;
+        const sy = (star.y + (my - 0.5) * parallaxMul) * h;
+
+        // Twinkle
+        const twinkle = star.layer === 0
+          ? 1 // distant stars don't twinkle
+          : star.layer === 1
+            ? Math.sin(time * 1.5 + star.phase) * 0.15 + 0.85
+            : Math.sin(time * 2.5 + star.phase) * 0.25 + 0.75;
+
+        ctx.globalAlpha = twinkle;
+        ctx.fillStyle = star.color;
         ctx.beginPath();
-        ctx.arc(star.x * w, star.y * h, star.s, 0, Math.PI * 2);
+        ctx.arc(sx, sy, star.s, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Diffraction spikes on bright foreground stars
+        if (star.layer === 2 && star.s > 2) {
+          const spikeLen = star.s * 4;
+          ctx.strokeStyle = `rgba(240,245,255,${0.15 * twinkle})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(sx - spikeLen, sy);
+          ctx.lineTo(sx + spikeLen, sy);
+          ctx.moveTo(sx, sy - spikeLen);
+          ctx.lineTo(sx, sy + spikeLen);
+          ctx.stroke();
+        }
+
+        ctx.globalAlpha = 1;
+      });
+
+      // === 4. Star lanes (curved, with glow + particle flow) ===
+      STAR_LANES.forEach(([fromId, toId], laneIdx) => {
+        const from = SYSTEMS.find((s) => s.id === fromId)!;
+        const to = SYSTEMS.find((s) => s.id === toId)!;
+        const x1 = from.x * w, y1 = from.y * h;
+        const x2 = to.x * w, y2 = to.y * h;
+        // Bezier control point - offset perpendicular to midpoint
+        const midX = (x1 + x2) / 2;
+        const midY = (y1 + y2) / 2;
+        const dx = x2 - x1, dy = y2 - y1;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const perpX = -dy / dist * dist * 0.08;
+        const perpY = dx / dist * dist * 0.08;
+        const cpx = midX + perpX;
+        const cpy = midY + perpY;
+
+        // Lane glow (wider, softer)
+        ctx.strokeStyle = "rgba(120,170,210,0.06)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(cpx, cpy, x2, y2);
+        ctx.stroke();
+
+        // Lane line
+        ctx.strokeStyle = "rgba(120,170,210,0.2)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.quadraticCurveTo(cpx, cpy, x2, y2);
+        ctx.stroke();
+      });
+
+      // Lane particle flow
+      laneParticlesRef.current.forEach((lp) => {
+        lp.t = (lp.t + lp.speed) % 1;
+        const lane = STAR_LANES[lp.laneIdx];
+        if (!lane) return;
+        const from = SYSTEMS.find((s) => s.id === lane[0])!;
+        const to = SYSTEMS.find((s) => s.id === lane[1])!;
+        const x1 = from.x * w, y1 = from.y * h;
+        const x2 = to.x * w, y2 = to.y * h;
+        const dx = x2 - x1, dy = y2 - y1;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const perpX = -dy / dist * dist * 0.08;
+        const perpY = dx / dist * dist * 0.08;
+        const cpx = (x1 + x2) / 2 + perpX;
+        const cpy = (y1 + y2) / 2 + perpY;
+        // Quadratic bezier point at t
+        const t = lp.t;
+        const px = (1 - t) * (1 - t) * x1 + 2 * (1 - t) * t * cpx + t * t * x2;
+        const py = (1 - t) * (1 - t) * y1 + 2 * (1 - t) * t * cpy + t * t * y2;
+        ctx.fillStyle = `rgba(160,210,255,${0.5 - Math.abs(t - 0.5) * 0.8})`;
+        ctx.beginPath();
+        ctx.arc(px, py, lp.size, 0, Math.PI * 2);
         ctx.fill();
       });
 
-      // Star lanes
-      STAR_LANES.forEach(([fromId, toId]) => {
-        const from = SYSTEMS.find((s) => s.id === fromId)!;
-        const to = SYSTEMS.find((s) => s.id === toId)!;
-        ctx.strokeStyle = "rgba(57,211,83,0.08)";
-        ctx.lineWidth = 1;
-        ctx.setLineDash([4, 8]);
-        ctx.beginPath();
-        ctx.moveTo(from.x * w, from.y * h);
-        ctx.lineTo(to.x * w, to.y * h);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      });
+      // === 5. Star systems (layered glow with additive blending) ===
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
 
-      // Star systems
-      SYSTEMS.forEach((sys) => {
+      SYSTEMS.forEach((sys, sysIdx) => {
         const sx = sys.x * w;
         const sy = sys.y * h;
         const isHovered = hoveredSystem?.id === sys.id;
         const isSelected = selectedSystem?.id === sys.id;
-        const pulse = Math.sin(time * 2 + SYSTEMS.indexOf(sys)) * 0.3 + 1;
-        const sz = sys.size * (isHovered ? 1.3 : 1) * (isSelected ? 1.4 : 1);
+        const sz = sys.size;
+        const brightMul = (isHovered ? 1.3 : 1) * (isSelected ? 1.4 : 1);
 
-        // Glow
-        const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, sz * 3 * pulse);
-        glow.addColorStop(0, sys.glowColor);
-        glow.addColorStop(1, "transparent");
-        ctx.fillStyle = glow;
+        // Parse hex color to RGB
+        const r = parseInt(sys.color.slice(1, 3), 16);
+        const g = parseInt(sys.color.slice(3, 5), 16);
+        const b = parseInt(sys.color.slice(5, 7), 16);
+
+        // Outer corona
+        const corona = ctx.createRadialGradient(sx, sy, 0, sx, sy, sz * 3 * brightMul);
+        corona.addColorStop(0, `rgba(${r},${g},${b},${0.15 * brightMul})`);
+        corona.addColorStop(0.5, `rgba(${r},${g},${b},${0.05 * brightMul})`);
+        corona.addColorStop(1, "transparent");
+        ctx.fillStyle = corona;
         ctx.beginPath();
-        ctx.arc(sx, sy, sz * 3 * pulse, 0, Math.PI * 2);
+        ctx.arc(sx, sy, sz * 3 * brightMul, 0, Math.PI * 2);
         ctx.fill();
 
-        // Core
-        ctx.fillStyle = sys.color;
+        // Mid glow
+        const mid = ctx.createRadialGradient(sx, sy, 0, sx, sy, sz * 1.5 * brightMul);
+        mid.addColorStop(0, `rgba(${r},${g},${b},${0.5 * brightMul})`);
+        mid.addColorStop(0.6, `rgba(${r},${g},${b},${0.15 * brightMul})`);
+        mid.addColorStop(1, "transparent");
+        ctx.fillStyle = mid;
         ctx.beginPath();
-        ctx.arc(sx, sy, sz * 0.6, 0, Math.PI * 2);
+        ctx.arc(sx, sy, sz * 1.5 * brightMul, 0, Math.PI * 2);
         ctx.fill();
 
-        // Ring
-        if (isHovered || isSelected) {
-          ctx.strokeStyle = sys.color;
-          ctx.lineWidth = 1.5;
+        // Inner white-hot core
+        const core = ctx.createRadialGradient(sx, sy, 0, sx, sy, sz * 0.5);
+        core.addColorStop(0, `rgba(255,255,255,${0.9 * brightMul})`);
+        core.addColorStop(0.4, `rgba(${Math.min(255, r + 80)},${Math.min(255, g + 80)},${Math.min(255, b + 80)},${0.6 * brightMul})`);
+        core.addColorStop(1, "transparent");
+        ctx.fillStyle = core;
+        ctx.beginPath();
+        ctx.arc(sx, sy, sz * 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.restore(); // back to normal composite
+
+      // === Orbital rings + moons (on top, normal blending) ===
+      SYSTEMS.forEach((sys, sysIdx) => {
+        const sx = sys.x * w;
+        const sy = sys.y * h;
+        const isHovered = hoveredSystem?.id === sys.id;
+        const isSelected = selectedSystem?.id === sys.id;
+        const sz = sys.size;
+
+        // Orbital ring for larger systems
+        if (sz >= 14) {
+          const ringR = sz * 2.2;
+          ctx.strokeStyle = `${sys.color}18`;
+          ctx.lineWidth = 0.5;
           ctx.beginPath();
-          ctx.arc(sx, sy, sz * 1.2, 0, Math.PI * 2);
+          ctx.ellipse(sx, sy, ringR, ringR * 0.35, 0.3 + sysIdx * 0.5, 0, Math.PI * 2);
           ctx.stroke();
 
-          // Selection ring
-          if (isSelected) {
-            ctx.strokeStyle = `${sys.color}80`;
-            ctx.lineWidth = 1;
+          // Tiny orbiting moon
+          const moonAngle = time * 0.5 + sysIdx * 2;
+          const moonX = sx + Math.cos(moonAngle) * ringR;
+          const moonY = sy + Math.sin(moonAngle) * ringR * 0.35;
+          ctx.fillStyle = `${sys.color}60`;
+          ctx.beginPath();
+          ctx.arc(moonX, moonY, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Lens flare dots (subtle, along a diagonal)
+        if (sz >= 12) {
+          const flareAngle = 0.7;
+          for (let f = 1; f <= 3; f++) {
+            const fd = sz * f * 1.2;
+            const fx = sx + Math.cos(flareAngle) * fd;
+            const fy = sy + Math.sin(flareAngle) * fd;
+            ctx.fillStyle = `${sys.color}${f === 1 ? "20" : "10"}`;
             ctx.beginPath();
-            ctx.arc(sx, sy, sz * 1.8, time * 2, time * 2 + Math.PI * 1.5);
-            ctx.stroke();
+            ctx.arc(fx, fy, 2 - f * 0.4, 0, Math.PI * 2);
+            ctx.fill();
           }
         }
 
+        // Hover: bright reticle ring
+        if (isHovered && !isSelected) {
+          ctx.strokeStyle = `rgba(160,220,255,0.4)`;
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 5]);
+          ctx.beginPath();
+          ctx.arc(sx, sy, sz * 1.8, time * 2, time * 2 + Math.PI * 2);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        // Selected: pulsing ring + targeting brackets
+        if (isSelected) {
+          // Pulsing expanding ring
+          const pulseT = (time * 0.8) % 2;
+          const pulseR = sz * 1.5 + pulseT * sz;
+          const pulseAlpha = Math.max(0, 0.6 - pulseT * 0.3);
+          ctx.strokeStyle = `${sys.color}${Math.floor(pulseAlpha * 255).toString(16).padStart(2, "0")}`;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(sx, sy, pulseR, 0, Math.PI * 2);
+          ctx.stroke();
+
+          // Rotating selection arc
+          ctx.strokeStyle = `${sys.color}90`;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(sx, sy, sz * 2, time * 1.5, time * 1.5 + Math.PI * 0.8);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(sx, sy, sz * 2, time * 1.5 + Math.PI, time * 1.5 + Math.PI * 1.8);
+          ctx.stroke();
+
+          // Targeting brackets at corners
+          const bSz = sz * 2.5;
+          const bLen = 6;
+          ctx.strokeStyle = `${sys.color}70`;
+          ctx.lineWidth = 1;
+          [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([dx, dy]) => {
+            ctx.beginPath();
+            ctx.moveTo(sx + dx * bSz, sy + dy * bSz + dy * -bLen);
+            ctx.lineTo(sx + dx * bSz, sy + dy * bSz);
+            ctx.lineTo(sx + dx * bSz + dx * -bLen, sy + dy * bSz);
+            ctx.stroke();
+          });
+        }
+
         // Label
-        ctx.fillStyle = isHovered || isSelected ? sys.color : "rgba(200,220,255,0.5)";
+        ctx.fillStyle = isHovered || isSelected ? sys.color : "rgba(200,220,255,0.4)";
         ctx.font = `${isHovered || isSelected ? "bold " : ""}10px "JetBrains Mono", monospace`;
         ctx.textAlign = "center";
-        ctx.fillText(sys.name, sx, sy + sz * 1.8 + 12);
+        ctx.fillText(sys.name, sx, sy + sz * 2.5 + 10);
       });
 
-      // Warp effect
-      if (warpTarget) {
-        const progress = Math.min(1, (time % 100));
-        ctx.fillStyle = `rgba(57,211,83,${progress * 0.3})`;
-        ctx.fillRect(0, 0, w, h);
-      }
+      // === 6. Ambient dust ===
+      dustRef.current.forEach((d) => {
+        d.x = (d.x + d.vx + 1) % 1;
+        d.y = (d.y + d.vy + 1) % 1;
+        const dx = d.x * w;
+        const dy = d.y * h;
+        ctx.fillStyle = `rgba(140,170,220,${d.alpha})`;
+        ctx.beginPath();
+        ctx.arc(dx, dy, d.s, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // === 8. Vignette (draw last!) ===
+      const diag = Math.sqrt(w * w + h * h) / 2;
+      const vig = ctx.createRadialGradient(w / 2, h / 2, diag * 0.3, w / 2, h / 2, diag);
+      vig.addColorStop(0, "transparent");
+      vig.addColorStop(0.6, "transparent");
+      vig.addColorStop(0.85, "rgba(0,0,0,0.35)");
+      vig.addColorStop(1, "rgba(0,0,0,0.7)");
+      ctx.fillStyle = vig;
+      ctx.fillRect(0, 0, w, h);
 
       frameRef.current = requestAnimationFrame(animate);
     };
@@ -264,7 +528,7 @@ export default function GalaxyPage() {
       cancelAnimationFrame(frameRef.current);
       window.removeEventListener("resize", resize);
     };
-  }, [stars, hoveredSystem, selectedSystem, warpTarget]);
+  }, [hoveredSystem, selectedSystem, warpTarget]);
 
   // Mouse interaction
   const handleMouseMove = useCallback(

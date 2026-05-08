@@ -53,6 +53,8 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
   const completedRef = useRef(false);
   const shakeRef = useRef({ x: 0, y: 0 });
   const bassRef = useRef(0);
+  // Track last known dimensions to detect layout shifts
+  const dimsRef = useRef({ w: 0, h: 0 });
 
   const initParticles = useCallback((w: number, h: number) => {
     const particles: Particle[] = [];
@@ -73,6 +75,7 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
       });
     }
     particlesRef.current = particles;
+    dimsRef.current = { w, h };
   }, []);
 
   const generateLightning = useCallback((cx: number, cy: number, targetX: number, targetY: number, segments: number): { x: number; y: number }[] => {
@@ -99,8 +102,18 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
       ringsRef.current = [];
       lightningRef.current = [];
       bassRef.current = 0;
+      shakeRef.current = { x: 0, y: 0 };
+      // Re-init particles if viewport dimensions changed since last init
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      if (dimsRef.current.w !== vw || dimsRef.current.h !== vh || particlesRef.current.length === 0) {
+        initParticles(vw, vh);
+      }
+    } else if (!active) {
+      // Reset activeRef so the animation can be triggered again next time
+      activeRef.current = false;
     }
-  }, [active]);
+  }, [active, initParticles]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -111,9 +124,8 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      if (particlesRef.current.length === 0) {
-        initParticles(canvas.width, canvas.height);
-      }
+      // Always re-init on resize so particles use correct center
+      initParticles(canvas.width, canvas.height);
     };
     resize();
     window.addEventListener("resize", resize);
@@ -132,10 +144,25 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
+      // Force canvas to cover full viewport on every frame to catch any layout shifts
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      if (canvas.width !== vw || canvas.height !== vh) {
+        canvas.width = vw;
+        canvas.height = vh;
+        // Re-init particles if dims changed while active
+        if (activeRef.current) {
+          initParticles(vw, vh);
+        }
+      }
+
       const w = canvas.width;
       const h = canvas.height;
-      const cx = w / 2 + shakeRef.current.x;
-      const cy = h / 2 + shakeRef.current.y;
+      // Base center is always exact viewport center; shake is additive offset only
+      const baseCx = w / 2;
+      const baseCy = h / 2;
+      const cx = baseCx + shakeRef.current.x;
+      const cy = baseCy + shakeRef.current.y;
       const phase = phaseRef.current;
       phaseTimeRef.current += dt;
       const pt = phaseTimeRef.current;
@@ -336,6 +363,23 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
           }
         }
 
+        // CRT scanline overlay — retro-tech feel during charge buildup
+        if (eased > 0.15) {
+          const scanAlpha = Math.min(0.06, eased * 0.07);
+          ctx.fillStyle = `rgba(0,0,0,${scanAlpha})`;
+          for (let row = 0; row < h; row += 4) {
+            ctx.fillRect(0, row, w, 2);
+          }
+          // Subtle horizontal flicker line that drifts down the screen
+          const flickerY = ((pt * 180) % (h + 40)) - 20;
+          const flickerGrad = ctx.createLinearGradient(0, flickerY - 6, 0, flickerY + 6);
+          flickerGrad.addColorStop(0, "transparent");
+          flickerGrad.addColorStop(0.5, `rgba(${rgb.r},${rgb.g},${rgb.b},${eased * 0.08})`);
+          flickerGrad.addColorStop(1, "transparent");
+          ctx.fillStyle = flickerGrad;
+          ctx.fillRect(0, flickerY - 6, w, 12);
+        }
+
         if (progress >= 1) {
           phaseRef.current = PHASE_JUMP;
           phaseTimeRef.current = 0;
@@ -491,6 +535,40 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
         ctx.fillStyle = vig;
         ctx.fillRect(0, 0, w, h);
 
+        // Screen-space chromatic aberration: read the canvas into an offscreen
+        // buffer and composite slightly offset red and blue copies on top.
+        // We approximate this cheaply by drawing two full-frame tinted overlays
+        // with globalCompositeOperation = 'screen' shifted left/right.
+        {
+          const aberration = progress * 6; // px offset grows with speed
+          if (aberration > 0.5) {
+            // Red channel ghost — shift left
+            ctx.save();
+            ctx.globalCompositeOperation = "screen";
+            ctx.globalAlpha = 0.08 * progress;
+            ctx.translate(-aberration, 0);
+            ctx.drawImage(canvas, 0, 0);
+            ctx.restore();
+
+            // Blue channel ghost — shift right
+            ctx.save();
+            ctx.globalCompositeOperation = "screen";
+            ctx.globalAlpha = 0.08 * progress;
+            ctx.translate(aberration, 0);
+            ctx.drawImage(canvas, 0, 0);
+            ctx.restore();
+
+            // Tint the red ghost red and blue ghost blue via blend rects
+            ctx.save();
+            ctx.globalCompositeOperation = "multiply";
+            ctx.fillStyle = `rgba(255,80,80,${0.06 * progress})`;
+            ctx.fillRect(0, 0, w / 2, h);
+            ctx.fillStyle = `rgba(80,80,255,${0.06 * progress})`;
+            ctx.fillRect(w / 2, 0, w / 2, h);
+            ctx.restore();
+          }
+        }
+
         if (progress >= 1) {
           phaseRef.current = PHASE_TUNNEL;
           phaseTimeRef.current = 0;
@@ -500,15 +578,16 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
       // === PHASE: TUNNEL (1.2s) - wormhole corridor ===
       else if (phase === PHASE_TUNNEL) {
         const progress = Math.min(pt / 1.2, 1);
-        const speed = 5 + progress * 15;
+        const speed = 12 + progress * 30; // faster: was 5+15
 
-        // Spiral tunnel walls
-        const spiralCount = 60;
+        // Spiral tunnel walls — tighter spiral with higher rotation speed
+        const spiralCount = 80; // more points = tighter weave (was 60)
         for (let i = 0; i < spiralCount; i++) {
           const z = ((pt * speed * 100 + i * (2000 / spiralCount)) % 2000) + 1;
           const scale = 500 / z;
-          const baseAngle = (i / spiralCount) * Math.PI * 2 + pt * 3;
-          const tunnelR = (150 + Math.sin(pt * 2 + i) * 30) * scale;
+          // Tighter spiral: rotate at 8 rad/s (was 3), tighten radius oscillation
+          const baseAngle = (i / spiralCount) * Math.PI * 2 + pt * 8;
+          const tunnelR = (100 + Math.sin(pt * 5 + i * 0.4) * 20) * scale; // tighter radius (was 150+30)
 
           const sx = cx + Math.cos(baseAngle) * tunnelR;
           const sy = cy + Math.sin(baseAngle) * tunnelR;
@@ -606,13 +685,19 @@ export function WarpDrive({ active, color = "#39d353", onComplete }: WarpDrivePr
     };
   }, [color, initParticles, generateLightning, onComplete]);
 
-  if (!active && !activeRef.current) return null;
-
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-[9999]"
-      style={{ pointerEvents: active ? "all" : "none" }}
+      style={{
+        // Always render but hide when inactive - this ensures canvas has
+        // correct viewport dimensions before the animation fires
+        pointerEvents: active ? "all" : "none",
+        opacity: active ? 1 : 0,
+        // Use opacity only (not visibility:hidden) so the element
+        // remains in the layout and canvas dims stay accurate
+        transition: "opacity 0.1s",
+      }}
     />
   );
 }
