@@ -555,7 +555,7 @@ export default function GalaxyPage() {
       const shipX = ship.x * w;
       const shipY = ship.y * h;
       const shipAngle = ship.angle;
-      const shipSize = 7;
+      const shipSize = 14;
 
       ctx.save();
       ctx.translate(shipX, shipY);
