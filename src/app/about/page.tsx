@@ -4,7 +4,7 @@ import { timeline, expertise } from "@/lib/data";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Rob Ragan - Principal Technology Strategist at Bishop Fox. 15+ years of security research, from search engine hacking to AI/LLM security.",
+    "Rob Ragan - Principal Technology Strategist at Bishop Fox. 18+ years of security research, from search engine hacking to AI/LLM security.",
 };
 
 export default function AboutPage() {
@@ -24,7 +24,7 @@ export default function AboutPage() {
         {/* Bio */}
         <div className="mt-12 prose prose-lg max-w-none">
           <p>
-            I&apos;ve spent 15+ years finding ways to break things that
+            I&apos;ve spent 18+ years finding ways to break things that
             weren&apos;t supposed to break. Started building security testing
             tools at SPI Dynamics (later acquired by HP), working on the dynamic
             analysis engine for WebInspect and static analysis for DevInspect.

@@ -206,6 +206,11 @@ body {
 .animate-delay-400 { animation-delay: 0.4s; }
 
 /* ── Galaxy / Masters of Orion Easter Egg ── */
+@keyframes warpRoutePulse {
+  0%, 100% { opacity: 0.3; transform: scaleX(0.3); }
+  50% { opacity: 1; transform: scaleX(1); }
+}
+
 @keyframes warpIn {
   0% { opacity: 0; }
   50% { opacity: 1; }

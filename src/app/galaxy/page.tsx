@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { WarpDrive } from "@/components/WarpDrive";
 
 interface StarSystem {
   id: string;
@@ -74,7 +75,7 @@ const SYSTEMS: StarSystem[] = [
     color: "#38bdf8",
     glowColor: "#38bdf860",
     href: "/talks",
-    description: "Black Hat, DEF CON, RSA // 15+ Talks",
+    description: "Black Hat, DEF CON, RSA // 18+ Talks",
     type: "Class T - Comm Relay",
   },
   {
@@ -298,9 +299,12 @@ export default function GalaxyPage() {
   const handleWarp = () => {
     if (!selectedSystem) return;
     setWarpTarget(selectedSystem);
-    setTimeout(() => {
+  };
+
+  const handleWarpComplete = () => {
+    if (selectedSystem) {
       router.push(selectedSystem.href);
-    }, 800);
+    }
   };
 
   return (
@@ -336,54 +340,218 @@ export default function GalaxyPage() {
         </div>
       </div>
 
-      {/* System Info Panel */}
+      {/* System Info Panel — HUD */}
       {(hoveredSystem || selectedSystem) && (
         <div
-          className={`absolute bottom-0 left-0 right-0 transition-all duration-300 ${showUI ? "opacity-100" : "opacity-0"}`}
+          className={`absolute bottom-0 left-0 right-0 transition-all duration-500 ${showUI ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
         >
-          <div className="max-w-6xl mx-auto p-4">
-            <div className="border border-green-400/20 bg-[#050510]/90 backdrop-blur rounded p-4 max-w-md mx-auto sm:mx-0">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="font-mono text-[9px] tracking-[0.15em] text-green-400/40 uppercase">
-                    {(selectedSystem || hoveredSystem)!.type}
-                  </p>
-                  <h2
-                    className="font-mono text-xl mt-1"
-                    style={{ color: (selectedSystem || hoveredSystem)!.color }}
-                  >
-                    {(selectedSystem || hoveredSystem)!.name}
-                  </h2>
-                  <p className="font-mono text-xs text-green-400/60 mt-2">
-                    {(selectedSystem || hoveredSystem)!.description}
-                  </p>
-                </div>
-                {selectedSystem && (
-                  <button
-                    onClick={handleWarp}
-                    className={`font-mono text-xs px-4 py-2 border rounded transition-all ${
-                      warpTarget
-                        ? "border-green-400 bg-green-400 text-black"
-                        : "border-green-400/40 text-green-400 hover:border-green-400 hover:bg-green-400/10"
-                    }`}
-                  >
-                    {warpTarget ? "WARPING..." : "ENGAGE >>"}
-                  </button>
-                )}
-              </div>
+          <div className="max-w-3xl mx-auto p-4">
+            <div
+              className="relative bg-[#050510]/95 backdrop-blur-md overflow-hidden"
+              style={{
+                border: `1px solid ${(selectedSystem || hoveredSystem)!.color}30`,
+                boxShadow: `0 0 30px ${(selectedSystem || hoveredSystem)!.color}15, inset 0 0 30px ${(selectedSystem || hoveredSystem)!.color}08`,
+              }}
+            >
+              {/* Corner accents */}
+              {[
+                "top-0 left-0 border-t border-l",
+                "top-0 right-0 border-t border-r",
+                "bottom-0 left-0 border-b border-l",
+                "bottom-0 right-0 border-b border-r",
+              ].map((pos) => (
+                <div
+                  key={pos}
+                  className={`absolute w-4 h-4 ${pos}`}
+                  style={{ borderColor: (selectedSystem || hoveredSystem)!.color }}
+                />
+              ))}
 
-              {/* Scanline decoration */}
-              <div className="mt-3 flex gap-1">
-                {Array.from({ length: 20 }).map((_, i) => (
+              {/* Top scanline bar */}
+              <div className="h-[1px] w-full flex">
+                {Array.from({ length: 40 }).map((_, i) => (
                   <div
                     key={i}
-                    className="h-[2px] flex-1 rounded"
+                    className="flex-1 h-full"
                     style={{
                       backgroundColor: (selectedSystem || hoveredSystem)!.color,
-                      opacity: Math.random() * 0.5 + 0.1,
+                      opacity: Math.sin(i * 0.4) * 0.3 + 0.2,
                     }}
                   />
                 ))}
+              </div>
+
+              <div className="p-5">
+                {/* Header row: classification + coordinates */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    {/* Status indicator */}
+                    <div
+                      className="w-2 h-2 rounded-full animate-pulse"
+                      style={{
+                        backgroundColor: (selectedSystem || hoveredSystem)!.color,
+                        boxShadow: `0 0 8px ${(selectedSystem || hoveredSystem)!.color}`,
+                      }}
+                    />
+                    <p className="font-mono text-[9px] tracking-[0.2em] uppercase"
+                      style={{ color: `${(selectedSystem || hoveredSystem)!.color}99` }}
+                    >
+                      {(selectedSystem || hoveredSystem)!.type}
+                    </p>
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="font-mono text-[9px] text-green-400/30">
+                      X:{((selectedSystem || hoveredSystem)!.x * 1000).toFixed(0)}
+                    </span>
+                    <span className="font-mono text-[9px] text-green-400/30">
+                      Y:{((selectedSystem || hoveredSystem)!.y * 1000).toFixed(0)}
+                    </span>
+                    <span className="font-mono text-[9px] text-green-400/30">
+                      R:{((selectedSystem || hoveredSystem)!.size * 12.4).toFixed(0)}ly
+                    </span>
+                  </div>
+                </div>
+
+                {/* Main content */}
+                <div className="flex items-end justify-between gap-6">
+                  <div className="min-w-0">
+                    <h2
+                      className="font-mono text-2xl sm:text-3xl font-bold tracking-wide"
+                      style={{
+                        color: (selectedSystem || hoveredSystem)!.color,
+                        textShadow: `0 0 20px ${(selectedSystem || hoveredSystem)!.color}40`,
+                      }}
+                    >
+                      {(selectedSystem || hoveredSystem)!.name}
+                    </h2>
+                    <p className="font-mono text-xs text-green-400/50 mt-1.5 tracking-wide">
+                      {(selectedSystem || hoveredSystem)!.description}
+                    </p>
+
+                    {/* Route info when selected */}
+                    {selectedSystem && (
+                      <div className="flex items-center gap-4 mt-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                          <span className="font-mono text-[9px] text-green-400/50">SOL PRIME</span>
+                        </div>
+                        <div className="flex-1 max-w-[80px] h-[1px] relative overflow-hidden">
+                          <div
+                            className="absolute inset-0"
+                            style={{
+                              background: `linear-gradient(90deg, #39d353, ${selectedSystem.color})`,
+                              animation: "warpRoutePulse 1s ease-in-out infinite",
+                            }}
+                          />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-1.5 h-1.5 rounded-full"
+                            style={{ backgroundColor: selectedSystem.color }}
+                          />
+                          <span className="font-mono text-[9px]"
+                            style={{ color: `${selectedSystem.color}80` }}
+                          >
+                            {selectedSystem.name}
+                          </span>
+                        </div>
+                        <span className="font-mono text-[9px] text-green-400/30 ml-2">
+                          {(Math.sqrt(
+                            (selectedSystem.x - 0.5) ** 2 +
+                            (selectedSystem.y - 0.45) ** 2
+                          ) * 1000).toFixed(0)}ly
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Engage button */}
+                  {selectedSystem && (
+                    <div className="shrink-0">
+                      <button
+                        onClick={handleWarp}
+                        className="relative group"
+                      >
+                        {/* Glow ring behind button */}
+                        <div
+                          className="absolute -inset-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"
+                          style={{ backgroundColor: `${selectedSystem.color}30` }}
+                        />
+                        <div
+                          className={`relative font-mono text-xs tracking-[0.15em] px-6 py-3 rounded-lg border transition-all duration-300 ${
+                            warpTarget
+                              ? "text-black font-bold"
+                              : "hover:bg-opacity-20"
+                          }`}
+                          style={{
+                            borderColor: warpTarget ? selectedSystem.color : `${selectedSystem.color}50`,
+                            backgroundColor: warpTarget ? selectedSystem.color : `${selectedSystem.color}10`,
+                            color: warpTarget ? "#050510" : selectedSystem.color,
+                            boxShadow: warpTarget
+                              ? `0 0 30px ${selectedSystem.color}60, 0 0 60px ${selectedSystem.color}30`
+                              : `0 0 10px ${selectedSystem.color}10`,
+                          }}
+                        >
+                          {warpTarget ? (
+                            <span className="flex items-center gap-2">
+                              <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#050510] animate-pulse" />
+                              WARPING
+                            </span>
+                          ) : (
+                            "ENGAGE \u00BB"
+                          )}
+                        </div>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Bottom telemetry bar */}
+                <div className="mt-4 pt-3 border-t flex items-center justify-between"
+                  style={{ borderColor: `${(selectedSystem || hoveredSystem)!.color}15` }}
+                >
+                  <div className="flex gap-6">
+                    {[
+                      { label: "WARP", value: selectedSystem ? "READY" : "IDLE" },
+                      { label: "SHIELDS", value: "100%" },
+                      { label: "NAV", value: selectedSystem ? "LOCKED" : "SCAN" },
+                    ].map((stat) => (
+                      <div key={stat.label} className="flex items-center gap-2">
+                        <span className="font-mono text-[8px] text-green-400/25 tracking-wider">
+                          {stat.label}
+                        </span>
+                        <span className="font-mono text-[9px]"
+                          style={{
+                            color: stat.value === "READY" || stat.value === "LOCKED"
+                              ? (selectedSystem || hoveredSystem)!.color
+                              : "rgba(57,211,83,0.4)",
+                          }}
+                        >
+                          {stat.value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Power level bars */}
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className="w-1 rounded-sm transition-all duration-300"
+                        style={{
+                          height: `${6 + i * 2}px`,
+                          backgroundColor: selectedSystem
+                            ? i < 6
+                              ? (selectedSystem || hoveredSystem)!.color
+                              : `${(selectedSystem || hoveredSystem)!.color}30`
+                            : i < 3
+                              ? "rgba(57,211,83,0.4)"
+                              : "rgba(57,211,83,0.1)",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -416,12 +584,12 @@ export default function GalaxyPage() {
         </div>
       </div>
 
-      {/* Warp overlay */}
-      {warpTarget && (
-        <div className="absolute inset-0 pointer-events-none animate-warp">
-          <div className="absolute inset-0 bg-gradient-radial from-green-400/20 via-transparent to-transparent" />
-        </div>
-      )}
+      {/* Warp Drive Animation */}
+      <WarpDrive
+        active={!!warpTarget}
+        color={warpTarget?.color || "#39d353"}
+        onComplete={handleWarpComplete}
+      />
     </div>
   );
 }

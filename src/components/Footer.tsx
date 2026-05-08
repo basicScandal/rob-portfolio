@@ -78,15 +78,20 @@ export function Footer() {
             <span className="section-number">Research</span>
             <ul className="mt-3 space-y-2">
               {[
-                "AI/LLM Security",
-                "Cloud Security",
-                "OSINT Tools",
-                "Bishop Fox Labs",
+                { label: "AI/LLM Security", href: "https://github.com/BishopFox/llm-testing-findings" },
+                { label: "Cloud Security", href: "https://github.com/BishopFox/smogcloud" },
+                { label: "OSINT Tools", href: "https://bishopfox.com/tools/google-hacking-diggity-project-2/" },
+                { label: "Bishop Fox Labs", href: "https://bishopfox.com/blog" },
               ].map((item) => (
-                <li key={item}>
-                  <span className="text-sm text-fg-muted">
-                    {item}
-                  </span>
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-fg-muted hover:text-accent transition-colors"
+                  >
+                    {item.label}
+                  </a>
                 </li>
               ))}
             </ul>

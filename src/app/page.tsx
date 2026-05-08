@@ -302,7 +302,7 @@ export default function Home() {
               </a>
               . I lead a team of agentic engineers and I research and design
               cutting-edge offensive security agents that attack web
-              applications and other systems. 15+ years of breaking things so
+              applications and other systems. 18+ years of breaking things so
               they can be built back stronger.
             </p>
             <div className="flex gap-3 mt-8">

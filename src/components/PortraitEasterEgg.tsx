@@ -3,22 +3,18 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { WarpDrive } from "./WarpDrive";
 import robPhoto from "../../public/rob-ragan-2024.jpg";
 
 export function PortraitEasterEgg() {
   const [clicked, setClicked] = useState(false);
-  const [warping, setWarping] = useState(false);
+  const [warpActive, setWarpActive] = useState(false);
   const [porscheSrc, setPorscheSrc] = useState("");
   const router = useRouter();
 
-  // Resolve basePath for the porsche image at runtime
   useEffect(() => {
-    // Next.js sets __NEXT_DATA__.basePath or we can detect from current URL
-    const base = window.location.pathname.replace(/\/$/, "").split("/").slice(0, -1).join("/") || "";
     const prefix = window.location.pathname.includes("/rob-portfolio") ? "/rob-portfolio" : "";
     setPorscheSrc(`${prefix}/rob-porsche.png`);
-
-    // Preload the image
     const img = new window.Image();
     img.src = `${prefix}/rob-porsche.png`;
   }, []);
@@ -27,26 +23,23 @@ export function PortraitEasterEgg() {
     if (clicked) return;
     setClicked(true);
 
+    // Show porsche photo briefly, then fire the warp
     setTimeout(() => {
-      setWarping(true);
-    }, 1200);
+      setWarpActive(true);
+    }, 800);
+  };
 
-    setTimeout(() => {
-      router.push("/galaxy");
-    }, 2200);
+  const handleWarpComplete = () => {
+    router.push("/galaxy");
   };
 
   return (
     <div className="relative">
-      {warping && (
-        <div className="fixed inset-0 z-50 bg-[#050510] animate-fade-in-up pointer-events-none">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <p className="font-mono text-sm text-green-400 animate-pulse">
-              INITIATING WARP DRIVE...
-            </p>
-          </div>
-        </div>
-      )}
+      <WarpDrive
+        active={warpActive}
+        color="#39d353"
+        onComplete={handleWarpComplete}
+      />
 
       <div
         onClick={handleClick}
@@ -56,7 +49,6 @@ export function PortraitEasterEgg() {
             : "hover:scale-[1.02]"
         }`}
       >
-        {/* Professional headshot */}
         <Image
           src={robPhoto}
           alt="Rob Ragan"
@@ -66,7 +58,6 @@ export function PortraitEasterEgg() {
           priority
           placeholder="blur"
         />
-        {/* Easter egg photo - absolute overlay */}
         {porscheSrc && (
           <img
             src={porscheSrc}

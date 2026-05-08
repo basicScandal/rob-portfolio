@@ -5,7 +5,7 @@ import { talks, podcasts, videos } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Talks",
   description:
-    "Conference presentations by Rob Ragan at Black Hat, DEF CON, RSA, BSides, and more. 15+ years of security research on stage.",
+    "Conference presentations by Rob Ragan at Black Hat, DEF CON, RSA, BSides, and more. 18+ years of security research on stage.",
 };
 
 export default function TalksPage() {
@@ -44,7 +44,7 @@ export default function TalksPage() {
           </div>
           <div className="text-center">
             <p className="font-editorial text-3xl font-bold text-fg">
-              15+
+              18+
             </p>
             <p className="font-meta text-fg-muted mt-1">
               Total Talks
@@ -103,6 +103,26 @@ export default function TalksPage() {
                               className="font-meta text-[10px] text-accent hover:underline flex items-center gap-1"
                             >
                               Slides <ExternalLink size={10} />
+                            </a>
+                          )}
+                          {talk.video && (
+                            <a
+                              href={talk.video}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-meta text-[10px] text-accent hover:underline flex items-center gap-1"
+                            >
+                              Video <Play size={10} />
+                            </a>
+                          )}
+                          {talk.link && (
+                            <a
+                              href={talk.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-meta text-[10px] text-accent hover:underline flex items-center gap-1"
+                            >
+                              Details <ExternalLink size={10} />
                             </a>
                           )}
                         </div>

@@ -12,7 +12,7 @@ export const siteConfig = {
 };
 
 export const stats = [
-  { value: "15+", label: "Years in Security", index: "S01" },
+  { value: "18+", label: "Years in Security", index: "S01" },
   { value: "4x", label: "Black Hat Speaker", index: "S02" },
   { value: "10+", label: "Open Source Tools", index: "S03" },
   { value: "1", label: "Book Published", index: "S04" },
@@ -25,20 +25,26 @@ export interface Talk {
   coPresenter?: string;
   tags: string[];
   slides?: string;
+  video?: string;
+  link?: string;
 }
 
 export const talks: Talk[] = [
   {
     year: "2026",
     conference: "Decibel RSAC Founder Festival",
-    title: "Human Over the Loop",
-    tags: ["agentic AI", "RSA week"],
+    title: "Every 3 Months, It's a New World: Building Agents That Build Experiences",
+    coPresenter: "Caleb Sima, Ariel Herbert-Voss, Will Pearce, Casey Ellis",
+    tags: ["agentic AI", "coding agents", "RSA week"],
+    slides: "/slides-decibel-2026/",
   },
   {
     year: "2025",
     conference: "Dark Reading Panel",
     title: "The Promise and Perils of AI: Navigating Emerging Cyber Threats",
     tags: ["AI", "panel"],
+    video: "https://www.youtube.com/watch?v=k8AbPDrew-w",
+    link: "https://bishopfox.com/resources/dark-reading-panel-promise-perils-ai-navigating-emerging-cyber-threats",
   },
   {
     year: "2024",
@@ -46,6 +52,7 @@ export const talks: Talk[] = [
     title: "Testing LLM Algorithms While AI Tests Us",
     coPresenter: "Oscar Salazar",
     tags: ["AI/LLM", "keynote"],
+    video: "https://www.youtube.com/watch?v=bpw0zopn1H0",
   },
   {
     year: "2020",
@@ -61,6 +68,7 @@ export const talks: Talk[] = [
     title: "Twist & Shout: Ferris Bueller's Guide to Abuse Domain Permutations",
     coPresenter: "Kelly Albrink",
     tags: ["DNS", "OSINT"],
+    slides: "https://www.slideshare.net/bishopfox/ferris-buellers-guide-to-abuse-domain-permutations",
   },
   {
     year: "2014",
@@ -374,13 +382,13 @@ export const blogPosts: BlogPost[] = [
     publication: "Bishop Fox",
   },
   {
-    title: "Loyal Employee... or Cybercriminal Accomplice?",
+    title: "Demystifying AI and LLM Pen Testing",
     excerpt:
-      "How cybercriminals recruit employees as insider threats and what organizations can do about it.",
-    date: "2023-12-01",
-    tags: ["insider threat", "social engineering"],
-    url: "https://www.darkreading.com/cyber-risk/loyal-employee-or-cybercriminal-accomplice-",
-    publication: "Dark Reading",
+      "Critical vulnerabilities in LLM applications. RCE, API key exposure, injection in output rendering. What enterprises get wrong about AI security testing.",
+    date: "2024-07-30",
+    tags: ["AI/LLM", "pen testing"],
+    url: "https://forgepointcap.com/perspectives/tales-from-the-forefront-demystifying-ai-and-llm-pen-testing/",
+    publication: "Forgepoint Capital",
   },
   {
     title: "Get Organized Like a Villain",
