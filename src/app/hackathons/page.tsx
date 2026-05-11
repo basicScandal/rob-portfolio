@@ -262,7 +262,7 @@ export default function HackathonsPage() {
               systems to zero-knowledge trust protocols. Every team demoed live.
             </p>
             <a
-              href="https://nebulafog.ai/gallery"
+              href="https://nebulafog.ai/gallery.html"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-4 font-meta text-accent hover:underline"

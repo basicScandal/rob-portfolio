@@ -328,25 +328,26 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Cosmos",
+    description:
+      "AI-powered application security testing product at Bishop Fox. Autonomous agents that test entire application portfolios at scale, finding vulnerabilities across web apps that manual testing misses. Shipped to production, used by enterprise customers.",
+    tags: ["AI product", "appsec", "agentic"],
+    link: "https://bishopfox.com/blog/most-security-programs-test-a-fraction-of-their-applications-that-changes-today",
+    featured: true,
+  },
+  {
     title: "Arbiter",
     description:
-      "AI judge agent for NEBULA:FOG 2026. Watches hackathon demos via Gemini Live, scores with multi-model ensemble, detects prompt injection in 7 languages. Judged 25 live demos. 1,451 tests passing.",
-    tags: ["AI judge", "prompt injection", "multi-model"],
+      "AI judge agent for NEBULA:FOG 2026. Watches hackathon demos via Gemini Live, scores with a multi-model ensemble (Claude + Gemini + Groq), defends against prompt injection in 7 languages. Judged 25 live demos. 1,451 tests passing.",
+    tags: ["AI judge", "prompt injection", "Claude"],
     link: "https://github.com/basicScandal/arbiter",
   },
   {
     title: "Starlog",
     description:
-      "Expert-curated deep dives on offensive security tools and AI agents. Powered by GitHub stars and Claude. CLI pipeline that ingests stars, analyzes repos, generates articles. Live at starlog.is.",
-    tags: ["publication", "Claude", "Astro"],
+      "Expert-curated deep dives on offensive security tools and AI agents. CLI pipeline powered by Claude that ingests GitHub stars, analyzes repos, and generates long-form articles autonomously. Live at starlog.is.",
+    tags: ["publication", "Claude", "agentic"],
     link: "https://starlog.is",
-  },
-  {
-    title: "fsociety-ai",
-    description:
-      "AI Testing Suite. Collection of opportunistic payloads for detecting indirect prompt injection. Covers hidden injection, chain-of-thought bypass, data exfil attempts, multi-language bypass.",
-    tags: ["prompt injection", "AI testing", "payloads"],
-    link: "https://github.com/basicScandal/fsociety-ai",
   },
   {
     title: "LLM Testing Findings",
@@ -356,18 +357,18 @@ export const projects: Project[] = [
     link: "https://github.com/BishopFox/llm-testing-findings",
   },
   {
+    title: "my-precious-pii",
+    description:
+      "AI safety research: GPT-2 model trained on fake PII to study data leakage from language models. CTF-style challenge where participants extract synthetic PII using prompt injection and NLP techniques. Demonstrates real risks in model memorization.",
+    tags: ["AI safety", "PII leakage", "model security"],
+    link: "https://github.com/basicScandal/my-precious-pii",
+  },
+  {
     title: "SmogCloud",
     description:
       "Find cloud assets that no one wants exposed. Discovers internet-facing AWS resources across 14 services. 348 stars. Used by security engineers and pentesters worldwide.",
     tags: ["AWS", "cloud", "Go"],
     link: "https://github.com/BishopFox/smogcloud",
-  },
-  {
-    title: "my-precious-pii",
-    description:
-      "GPT-2 model trained on fake PII to study data leakage from language models. CTF-style challenge: extract synthetic PII from a spiked model using prompt injection and NLP techniques.",
-    tags: ["AI safety", "PII leakage", "CTF"],
-    link: "https://github.com/basicScandal/my-precious-pii",
   },
   {
     title: "Google Hacking Diggity Project",
@@ -473,39 +474,39 @@ export const blogPosts: BlogPost[] = [
 
 export const expertise = [
   {
-    category: "Offensive Security",
+    category: "AI-Powered Security Products",
     items: [
-      "Web Application Penetration Testing",
-      "Red Team Operations",
-      "Attack Chaining & Advanced Exploitation",
-      "Social Engineering & BEC",
+      "Agentic Application Architecture",
+      "Multi-Model Orchestration (Claude, Gemini, Groq)",
+      "AI/LLM Integration Testing",
+      "Prompt Injection Defense & AI Safety",
     ],
   },
   {
-    category: "AI & LLM Security",
+    category: "Offensive Security Engineering",
     items: [
-      "LLM Integration Testing",
-      "Prompt Injection & Data Leakage",
-      "Agentic AI Threat Modeling",
+      "Web Application Penetration Testing",
+      "Red Team Tooling & Attack Automation",
+      "Attack Chaining & Advanced Exploitation",
       "Adversarial Robustness Evaluation",
     ],
   },
   {
-    category: "Cloud & Automation",
+    category: "Product & Platform Engineering",
     items: [
-      "AWS Exposure Analysis",
-      "Continuous Attack Surface Management",
-      "Security Automation Strategy",
-      "Zero Trust Architecture",
+      "Full-Stack Prototyping & Rapid Iteration",
+      "DAST/SAST Engine Development",
+      "Cloud Infrastructure (AWS)",
+      "Security Automation at Scale",
     ],
   },
   {
-    category: "Research & OSINT",
+    category: "Research & Communication",
     items: [
-      "Search Engine Hacking",
-      "Domain Abuse & DNS Security",
-      "Open Source Intelligence",
-      "Automated Reconnaissance",
+      "Published Author (McGraw-Hill)",
+      "4x Black Hat Speaker",
+      "Customer-Facing Technical Strategy",
+      "Open Source Intelligence & Tooling",
     ],
   },
 ];
@@ -516,7 +517,7 @@ export const timeline = [
     role: "Principal Technology Strategist",
     company: "Bishop Fox",
     description:
-      "Leading AI/LLM security testing methodology. Driving cross-functional strategy across product, sales, and research. Building open-source tools for the security community.",
+      "Built and shipped Cosmos, an AI-powered application security testing product. Building agentic systems that autonomously test web applications at scale. Working directly with enterprise customers and cross-functional teams across product, sales, and research.",
   },
   {
     period: "2012 - 2020",
@@ -537,6 +538,6 @@ export const timeline = [
     role: "Software Engineer",
     company: "SPI Dynamics → HP",
     description:
-      "Built dynamic analysis engines for WebInspect and static analysis for DevInspect. SPI Dynamics acquired by Hewlett-Packard in 2007.",
+      "Built the dynamic analysis (DAST) engine for WebInspect and the static analysis engine for DevInspect. Commercial cybersecurity products used by thousands of enterprises. SPI Dynamics acquired by Hewlett-Packard in 2007 on the strength of this product line.",
   },
 ];

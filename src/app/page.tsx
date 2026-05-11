@@ -81,7 +81,7 @@ function TerminalBlock() {
           [+] Gemini Live connected (camera + audio)
         </p>
         <p className="text-gray-400">
-          [+] Scoring ensemble: Gemini + Claude + Groq
+          [+] Scoring ensemble: Claude + Gemini + Groq
         </p>
         <p className="text-gray-500 text-xs mt-1">
           &gt; Demo 14/25 | Team: ghost_protocol
@@ -365,7 +365,7 @@ export default function Home() {
             <p className="mt-3 text-fg-muted leading-relaxed">
               AI judge agent that watched 25 live hackathon demos in real time
               via Gemini Live API. Scores projects with a multi-model ensemble
-              (Gemini + Claude + Groq), delivers commentary via Cartesia TTS,
+              (<strong className="text-fg">Claude</strong> + Gemini + Groq), delivers commentary via Cartesia TTS,
               and defends itself against prompt injection attempts in 7
               languages. 1,451 tests passing.
             </p>
@@ -442,14 +442,24 @@ export default function Home() {
                   <p className="font-meta text-fg-faint">Events Run</p>
                 </div>
               </div>
-              <a
-                href="https://nebulafog.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-6 font-meta text-accent hover:underline"
-              >
-                nebulafog.ai <ExternalLink size={12} />
-              </a>
+              <div className="flex gap-4 mt-6">
+                <a
+                  href="https://nebulafog.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-meta text-accent hover:underline"
+                >
+                  nebulafog.ai <ExternalLink size={12} />
+                </a>
+                <a
+                  href="https://nebulafog.ai/gallery.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-meta text-accent hover:underline"
+                >
+                  Gallery <ExternalLink size={12} />
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -497,36 +507,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Errata / Anti-Marketing ── */}
+      {/* ── Approach ── */}
       <section className="mx-auto max-w-6xl px-4 sm:px-6 py-16">
         <div className="border border-dashed border-border rounded-lg p-6 sm:p-8 relative">
           <span className="absolute -top-3 left-6 px-2 bg-bg font-meta text-fg-faint">
-            Errata
+            Colophon
           </span>
           <h3 className="font-editorial text-xl text-fg mb-4">
-            What you won&apos;t find here
+            How I work
           </h3>
-          <ul className="space-y-2 text-sm text-fg-muted">
-            <li className="strike-accent">
-              AI hype without evidence or evals
-            </li>
-            <li className="strike-accent">
-              Security theater disguised as compliance
-            </li>
-            <li className="strike-accent">
-              Demos that don&apos;t survive contact with production
-            </li>
-            <li className="strike-accent">
-              Vendor pitches masquerading as research
-            </li>
-            <li className="strike-accent">
-              Findings without a path to remediation
-            </li>
-          </ul>
-          <p className="mt-4 text-sm text-fg-muted">
+          <p className="text-sm text-fg-muted leading-relaxed">
             Everything here is backed by hands-on testing, reproducible
-            findings, and code you can run. The goal is making systems more
-            robust, not just demonstrating they&apos;re broken.
+            findings, and code you can run. I prototype fast, ship to
+            production, and iterate based on what real users and real attackers
+            actually do. The goal is making systems more robust, not just
+            demonstrating they&apos;re broken.
           </p>
         </div>
       </section>

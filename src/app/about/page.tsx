@@ -24,34 +24,41 @@ export default function AboutPage() {
         {/* Bio */}
         <div className="mt-12 prose prose-lg max-w-none">
           <p>
-            I&apos;ve spent 18+ years finding ways to break things that
-            weren&apos;t supposed to break. Started building security testing
-            tools at SPI Dynamics (later acquired by HP), working on the dynamic
-            analysis engine for WebInspect and static analysis for DevInspect.
+            I&apos;ve spent 18+ years building security products and breaking
+            the systems they&apos;re supposed to protect. Started by writing the
+            dynamic analysis engine for{" "}
+            <strong>WebInspect</strong> and the static analysis engine for{" "}
+            <strong>DevInspect</strong> at SPI Dynamics, commercial security
+            products used by thousands of enterprises. SPI Dynamics was acquired
+            by HP in 2007 on the strength of that product line.
           </p>
           <p>
             After the acquisition I moved to Bishop Fox (originally Stach &amp;
             Liu) and never left. Went from web app pentester to principal
             researcher to technology strategist. Along the way I created the{" "}
-            <strong>Google Hacking Diggity Project</strong>, which became one of
-            the most widely used search engine hacking toolkits in the industry.
+            <strong>Google Hacking Diggity Project</strong> and shipped{" "}
+            <strong>SmogCloud</strong>, an open-source tool for discovering
+            internet-facing AWS resources that&apos;s used by security engineers
+            worldwide.
           </p>
           <p>
-            My research path tells the story: search engine hacking (Black Hat
-            2010, 2011; DEF CON 18, 20), then cloud security exploitation
-            (Black Hat 2014, 2020), and now{" "}
-            <strong>leading a team of agentic engineers building AI-powered
-            offensive security agents</strong>. I research and design
-            cutting-edge agents that attack web applications and other systems.
-            The kind of work where you&apos;re teaching AI to think like a
-            pentester and then watching it find things humans missed.
+            Now I build <strong>AI-powered cybersecurity products</strong>. I
+            designed and shipped{" "}
+            <strong>Cosmos</strong>, Bishop Fox&apos;s AI-driven application
+            security testing platform where autonomous agents test entire
+            application portfolios at scale. I work directly with enterprise
+            customers to understand their security workflows and iterate on the
+            product. I also build agentic systems that attack web applications
+            autonomously, teaching AI to think like a pentester and find things
+            humans miss.
           </p>
           <p>
-            The most valuable security work I&apos;ve done sits at the
-            intersection of offensive expertise and genuine curiosity about how
-            systems behave at scale. Finding a single vulnerability matters less
-            than understanding the class of problem it represents, and building
-            the agents and tooling that find the next ten automatically.
+            I care about <strong>AI safety from the offensive side</strong>. My
+            research on prompt injection defense, PII leakage from language
+            models, and adversarial robustness comes from actually attacking
+            these systems in production. Finding a single vulnerability matters
+            less than understanding the class of problem it represents, and
+            building the tooling that finds the next ten automatically.
           </p>
           <p>
             Contributing author to{" "}
@@ -62,12 +69,12 @@ export default function AboutPage() {
               Arbiter
             </a>
             , an AI judge agent that scored 25 live hackathon demos using a
-            multi-model ensemble, and{" "}
+            multi-model ensemble (Claude + Gemini + Groq), and{" "}
             <a href="https://starlog.is" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
               Starlog
             </a>
-            , a publication that turns GitHub stars into deep dives on offensive
-            security tools and AI agents.
+            , a Claude-powered publication that turns GitHub stars into deep
+            dives on offensive security tools and AI agents.
           </p>
           <p>
             When I&apos;m not breaking AI systems I&apos;m building cyber decks,
