@@ -35,7 +35,7 @@ export const talks: Talk[] = [
     conference: "Decibel RSAC Founder Festival",
     title: "Every 3 Months, It's a New World: Building Agents That Build Experiences",
     tags: ["agentic AI", "coding agents", "RSA week"],
-    slides: "/decibel-2026-slides.pdf",
+    slides: "https://speakerdeck.com/basicscandal/every-3-months-its-a-new-world",
   },
   {
     year: "2025",
@@ -339,7 +339,7 @@ export const projects: Project[] = [
     description:
       "Expert-curated deep dives on offensive security tools and AI agents. Powered by GitHub stars and Claude. CLI pipeline that ingests stars, analyzes repos, generates articles. Live at starlog.is.",
     tags: ["publication", "Claude", "Astro"],
-    link: "https://github.com/basicScandal/starlog",
+    link: "https://starlog.is",
   },
   {
     title: "fsociety-ai",
