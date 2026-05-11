@@ -115,25 +115,25 @@ function ProjectCard({
   link?: string;
   index: string;
 }) {
+  const Wrapper = link ? "a" : "div";
+  const wrapperProps = link
+    ? { href: link, target: "_blank" as const, rel: "noopener noreferrer" }
+    : {};
+
   return (
-    <div className="card-editorial rounded-lg overflow-hidden flex flex-col">
+    <Wrapper
+      {...wrapperProps}
+      className="card-editorial rounded-lg overflow-hidden flex flex-col group"
+    >
       {/* Color bar */}
       <div className="h-1 bg-gradient-to-r from-accent to-accent/50" />
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-start justify-between mb-3">
-          <h3 className="font-editorial text-lg text-fg">
+          <h3 className="font-editorial text-lg text-fg group-hover:text-accent transition-colors">
             {title}
           </h3>
           {link && (
-            <a
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-fg-faint hover:text-accent transition-colors shrink-0 ml-2"
-              aria-label={`View ${title}`}
-            >
-              <ExternalLink size={14} />
-            </a>
+            <ExternalLink size={14} className="text-fg-faint group-hover:text-accent transition-colors shrink-0 ml-2 mt-1" />
           )}
         </div>
         <p className="text-sm text-fg-muted leading-relaxed flex-1">
@@ -155,7 +155,7 @@ function ProjectCard({
           </span>
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 }
 
@@ -166,6 +166,9 @@ function TalkCard({
   coPresenter,
   tags,
   index,
+  slides,
+  video,
+  link,
 }: {
   year: string;
   conference: string;
@@ -173,9 +176,20 @@ function TalkCard({
   coPresenter?: string;
   tags: string[];
   index: string;
+  slides?: string;
+  video?: string;
+  link?: string;
 }) {
+  const href = slides || video || link || "/talks";
+  const isExternal = href.startsWith("http");
+
   return (
-    <div className="card-editorial rounded-lg p-5">
+    <a
+      href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      className="card-editorial rounded-lg p-5 group block"
+    >
       <div className="flex items-start justify-between mb-2">
         <span className="font-meta text-accent">
           {year}
@@ -187,7 +201,7 @@ function TalkCard({
       <p className="font-meta text-fg-muted mb-1">
         {conference}
       </p>
-      <h3 className="font-editorial text-base text-fg leading-snug">
+      <h3 className="font-editorial text-base text-fg leading-snug group-hover:text-accent transition-colors">
         {title}
       </h3>
       {coPresenter && (
@@ -205,7 +219,7 @@ function TalkCard({
           </span>
         ))}
       </div>
-    </div>
+    </a>
   );
 }
 
