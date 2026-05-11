@@ -35,7 +35,7 @@ export const talks: Talk[] = [
     conference: "Decibel RSAC Founder Festival",
     title: "Every 3 Months, It's a New World: Building Agents That Build Experiences",
     tags: ["agentic AI", "coding agents", "RSA week"],
-    slides: "/slides-decibel-2026/",
+    slides: "/decibel-2026-slides.pdf",
   },
   {
     year: "2025",
@@ -54,12 +54,13 @@ export const talks: Talk[] = [
     video: "https://www.youtube.com/watch?v=bpw0zopn1H0",
   },
   {
-    year: "2022",
+    year: "2024",
     conference: "BSidesSF",
-    title: "My Precious PII: Data Leakage from Language Models",
+    title: "LLM Privacy Paradox: Balancing Data Utility with Security",
     coPresenter: "Aashiq Ramachandran",
     tags: ["AI safety", "PII leakage"],
     link: "https://github.com/basicScandal/my-precious-pii",
+    video: "https://www.youtube.com/watch?v=9vyUGcyX4mA",
   },
   {
     year: "2020",
