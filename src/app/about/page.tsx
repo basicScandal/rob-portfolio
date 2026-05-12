@@ -56,7 +56,11 @@ export default function AboutPage() {
             I care about <strong>AI safety from the offensive side</strong>. My
             research on prompt injection defense, PII leakage from language
             models, and adversarial robustness comes from actually attacking
-            these systems in production. Finding a single vulnerability matters
+            these systems in production. I&apos;ve contributed cybersecurity
+            evaluation tasks to{" "}
+            <strong>METR</strong> (Model Evaluation &amp; Threat Research) to
+            help measure what autonomous AI agents can actually do when pointed
+            at real vulnerability classes. Finding a single vulnerability matters
             less than understanding the class of problem it represents, and
             building the tooling that finds the next ten automatically.
           </p>

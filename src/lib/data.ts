@@ -357,6 +357,13 @@ export const projects: Project[] = [
     link: "https://github.com/BishopFox/llm-testing-findings",
   },
   {
+    title: "METR Cybersecurity Benchmark",
+    description:
+      "Contributed the 'rcrce' cybersecurity challenge to METR's HCAST benchmark for evaluating autonomous AI agents. A 2.8-hour PHP race condition exploit task requiring RCE and flag retrieval. Zero AI agents have solved it. Built to the METR Task Standard for measuring frontier model capabilities.",
+    tags: ["AI safety", "benchmarks", "METR"],
+    link: "https://arxiv.org/abs/2503.17354",
+  },
+  {
     title: "my-precious-pii",
     description:
       "AI safety research: GPT-2 model trained on fake PII to study data leakage from language models. CTF-style challenge where participants extract synthetic PII using prompt injection and NLP techniques. Demonstrates real risks in model memorization.",
