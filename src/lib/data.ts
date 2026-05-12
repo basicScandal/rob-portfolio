@@ -397,6 +397,15 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "I Built a Skin System for Claude Code — Here's How It Works",
+    excerpt:
+      "A customizable theming system for Claude Code with nine visual and behavioral personas. Modifies terminal colors, ASCII banners, status indicators, and personality narration styles.",
+    date: "2026-05-12",
+    tags: ["Claude", "open source"],
+    url: "https://dev.to/basicscandal/i-built-a-skin-system-for-claude-code-heres-how-it-works-4pdi",
+    publication: "DEV Community",
+  },
+  {
     title: "Most Security Programs Test a Fraction of Their Applications. That Changes Today.",
     excerpt:
       "Announcing Cosmos AI-powered application security testing. How organizations can finally test entire application portfolios at scale.",
