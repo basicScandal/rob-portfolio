@@ -153,6 +153,12 @@ export interface Video {
 
 export const videos: Video[] = [
   {
+    title: "The Evolution of Pentesting with AI",
+    youtubeId: "1Aa_eYWODOI",
+    year: "2025",
+    venue: "AI Security Podcast",
+  },
+  {
     title: "The Promise and Perils of AI: Navigating Emerging Cyber Threats",
     youtubeId: "k8AbPDrew-w",
     year: "2025",
@@ -262,6 +268,15 @@ export interface Podcast {
 }
 
 export const podcasts: Podcast[] = [
+  {
+    show: "AI Security Podcast",
+    title: "The Evolution of Pentesting with AI",
+    date: "2025-05-15",
+    host: "AI Security Podcast",
+    link: "https://www.youtube.com/watch?v=1Aa_eYWODOI",
+    description:
+      "How AI is transforming penetration testing. Building autonomous security agents, the evolution from manual to AI-augmented offensive security, and what the future of pentesting looks like.",
+  },
   {
     show: "CyberScoop Safe Mode",
     title: "The 'Iron Man' Suit for Pen Testers",
