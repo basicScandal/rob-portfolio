@@ -412,6 +412,15 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Cheap Competence, Hostile Frontier",
+    excerpt:
+      "Why AI makes excellent security people more valuable, not less. AI commoditizes basic security skills while elevating expert judgment, but the real risk is losing the apprenticeship pipeline that builds senior talent.",
+    date: "2026-05-25",
+    tags: ["AI", "security"],
+    url: "https://open.substack.com/pub/theoradical/p/cheap-competence-hostile-frontier?r=au143&utm_campaign=post-expanded-share&utm_medium=post%20viewer",
+    publication: "Theoradical",
+  },
+  {
     title: "I Built a Skin System for Claude Code — Here's How It Works",
     excerpt:
       "A customizable theming system for Claude Code with nine visual and behavioral personas. Modifies terminal colors, ASCII banners, status indicators, and personality narration styles.",
