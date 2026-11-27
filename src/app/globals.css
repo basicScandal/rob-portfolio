@@ -247,3 +247,99 @@ body {
 .bg-gradient-radial {
   background: radial-gradient(circle, var(--tw-gradient-stops));
 }
+
+/* ── Trace explorer motion (timing from the transitions.dev recipes:
+      texts reveal, number pop-in, success check, tabs sliding,
+      icon swap, text states swap) ── */
+:root {
+  --pss-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pss-ease-pop: cubic-bezier(0.34, 1.35, 0.64, 1);
+  --pss-dur: 500ms;
+  --pss-dur-move: 250ms;
+  --pss-dur-swap: 150ms;
+  --pss-distance: 12px;
+  --pss-blur: 3px;
+  --pss-stagger: 40ms;
+}
+
+@keyframes pssRise {
+  from { opacity: 0; transform: translateY(var(--pss-distance)); filter: blur(var(--pss-blur)); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes pssPop {
+  from { opacity: 0; transform: scale(0.6); filter: blur(2px); }
+  to { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+@keyframes pssBob {
+  from { transform: scale(0.72); }
+  to { transform: scale(1); }
+}
+@keyframes pssDraw {
+  from { stroke-dashoffset: 1; opacity: 0; }
+  30% { opacity: 1; }
+  to { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes pssSwap {
+  from { opacity: 0; transform: translateY(4px); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes pssFade {
+  from { opacity: 0; }
+}
+
+.pss-rise {
+  animation: pssRise var(--pss-dur) var(--pss-ease) both;
+  animation-delay: var(--d, 0ms);
+}
+.pss-node,
+.pss-bob {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.pss-node {
+  animation: pssPop var(--pss-dur) var(--pss-ease-pop) both;
+  animation-delay: var(--d, 0ms);
+}
+.pss-bob {
+  animation: pssBob var(--pss-dur) var(--pss-ease-pop) both;
+  animation-delay: var(--d, 0ms);
+}
+.pss-edge {
+  stroke-dasharray: 1;
+  animation: pssDraw var(--pss-dur) var(--pss-ease) both;
+  animation-delay: var(--d, 0ms);
+}
+.pss-fade {
+  animation: pssFade var(--pss-dur-move) ease both;
+  animation-delay: var(--d, 0ms);
+}
+.pss-swap {
+  display: inline-block;
+  animation: pssSwap var(--pss-dur-swap) ease-in-out both;
+}
+.pss-shape {
+  transition: fill var(--pss-dur-move) ease, stroke var(--pss-dur-move) ease;
+}
+.pss-pill {
+  transition: transform var(--pss-dur-move) var(--pss-ease);
+}
+.pss-icon {
+  transition:
+    opacity var(--pss-dur-move) ease-in-out,
+    transform var(--pss-dur-move) ease-in-out,
+    filter var(--pss-dur-move) ease-in-out;
+}
+.pss-icon[data-on="false"] {
+  opacity: 0;
+  transform: scale(0.25);
+  filter: blur(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pss-rise, .pss-node, .pss-bob, .pss-edge, .pss-fade, .pss-swap {
+    animation: none !important;
+  }
+  .pss-shape, .pss-pill, .pss-icon {
+    transition: none !important;
+  }
+}

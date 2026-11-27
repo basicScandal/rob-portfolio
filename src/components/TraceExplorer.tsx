@@ -50,7 +50,7 @@ function nodeStyle(status: Status) {
 
 function Shape({ entry, status }: { entry: TraceEntry; status: Status }) {
   const s = nodeStyle(status);
-  const common = { fill: s.fill, stroke: s.stroke, strokeWidth: 1.75, strokeDasharray: s.dash };
+  const common = { fill: s.fill, stroke: s.stroke, strokeWidth: 1.75, strokeDasharray: s.dash, className: "pss-shape" };
   if (entry.kind === "fact") return <circle r={R} {...common} />;
   if (entry.kind === "intent")
     return <rect x={-R + 1} y={-R + 1} width={2 * R - 2} height={2 * R - 2} rx={3} {...common} />;
@@ -58,6 +58,12 @@ function Shape({ entry, status }: { entry: TraceEntry; status: Status }) {
     return <rect x={-R + 3} y={-R + 3} width={2 * R - 6} height={2 * R - 6} rx={2} transform="rotate(45)" {...common} />;
   return <rect x={-R - 8} y={-R + 1} width={2 * R + 16} height={2 * R - 2} rx={R} {...common} />;
 }
+
+function current_add(trace: Trace, step: number) {
+  return trace.steps[step].add ?? [];
+}
+
+const delay = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 
 export function TraceExplorer({ trace, label }: { trace: Trace; label: string }) {
   const last = trace.steps.length - 1;
@@ -71,7 +77,7 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
       setPlaying(false);
       return;
     }
-    const t = setTimeout(() => setStep((s) => s + 1), 2600);
+    const t = setTimeout(() => setStep((s) => s + 1), 3200);
     return () => clearTimeout(t);
   }, [playing, step, last]);
 
@@ -92,8 +98,14 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
     [trace]
   );
   const visible = new Set(order);
+  const added = current_add(trace, step);
+  // Entries written in this step stagger after each other. On first paint
+  // the whole graph staggers in board order.
+  const delayOf = (id: string, unit: number) => {
+    const i = added.indexOf(id);
+    return i >= 0 ? i * unit : order.indexOf(id) * 30;
+  };
   const current = trace.steps[step];
-  const markerId = `arrow-${trace.id}`;
 
   const go = (n: number) => {
     setPlaying(false);
@@ -123,13 +135,23 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
             className={`${btn} gap-1.5 px-3 font-meta`}
             onClick={() => (playing ? setPlaying(false) : play())}
           >
-            {playing ? <Pause size={14} /> : <Play size={14} />}
+            <span className="grid" aria-hidden="true">
+              <Play size={14} className="pss-icon col-start-1 row-start-1" data-on={!playing} />
+              <Pause size={14} className="pss-icon col-start-1 row-start-1" data-on={playing} />
+            </span>
             {playing ? "Pause" : step >= last ? "Replay" : "Play"}
           </button>
           <button type="button" className={btn} onClick={() => go(0)} disabled={step === 0} aria-label="Back to the start">
             <RotateCcw size={14} />
           </button>
-          <div className="flex items-center gap-1 ml-auto" role="tablist" aria-label={`${label} steps`}>
+          <div className="relative flex items-center gap-1 ml-auto" role="tablist" aria-label={`${label} steps`}>
+            <span
+              aria-hidden="true"
+              className="pss-pill absolute left-0 top-0 h-6 w-3 flex items-center justify-center pointer-events-none"
+              style={{ transform: `translateX(${step * 16}px)` }}
+            >
+              <span className="block h-2.5 w-2.5 rounded-full bg-accent" />
+            </span>
             {trace.steps.map((s, i) => (
               <button
                 key={i}
@@ -142,19 +164,23 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
               >
                 <span
                   className={`block h-2 w-2 rounded-full transition-colors ${
-                    i === step ? "bg-accent" : i < step ? "bg-fg-muted" : "bg-border"
+                    i < step ? "bg-fg-muted" : "bg-border"
                   }`}
                 />
               </button>
             ))}
           </div>
         </div>
-        <div className="mt-4 min-h-[8.5rem] sm:min-h-[6.5rem]" aria-live="polite">
+        <div className="mt-4 min-h-[9.5rem] sm:min-h-[7rem]" aria-live="polite">
           <p className="font-meta text-accent">
             Step {step + 1} of {last + 1}
           </p>
-          <h3 className="font-editorial text-xl text-fg mt-1">{current.title}</h3>
-          <p className="text-sm text-fg-muted leading-relaxed mt-1.5 max-w-3xl">{current.text}</p>
+          <div key={step}>
+            <h3 className="pss-rise font-editorial text-xl text-fg mt-1">{current.title}</h3>
+            <p className="pss-rise text-sm text-fg-muted leading-relaxed mt-1.5 max-w-3xl" style={delay(40)}>
+              {current.text}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -166,11 +192,6 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
           role="img"
           aria-label={`${label}: graph of board entries at step ${step + 1}`}
         >
-          <defs>
-            <marker id={markerId} viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M0 0 L8 4 L0 8 z" fill="var(--fg-faint)" />
-            </marker>
-          </defs>
           {trace.entries.flatMap((to) =>
             to.from
               .filter((f) => visible.has(f) && visible.has(to.id))
@@ -182,19 +203,32 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
                 const pad = (e: TraceEntry) => (e.kind === "goal" ? R + 12 : R + 4);
                 const hot = selected === f || selected === to.id;
                 const dim = status[f] === "dropped" || status[to.id] === "dropped";
+                const x2 = to.x - (dx / len) * pad(to);
+                const y2 = to.y - (dy / len) * pad(to);
+                const color = hot ? "var(--accent)" : "var(--fg-faint)";
+                const d = delayOf(to.id, 70) + 80;
                 return (
-                  <line
-                    key={`${f}-${to.id}`}
-                    x1={a.x + (dx / len) * pad(a)}
-                    y1={a.y + (dy / len) * pad(a)}
-                    x2={to.x - (dx / len) * pad(to)}
-                    y2={to.y - (dy / len) * pad(to)}
-                    stroke={hot ? "var(--accent)" : "var(--fg-faint)"}
-                    strokeWidth={hot ? 2 : 1.25}
-                    strokeDasharray={dim ? "2 4" : undefined}
-                    opacity={dim ? 0.5 : 1}
-                    markerEnd={`url(#${markerId})`}
-                  />
+                  <g key={`${f}-${to.id}-${dim ? "dim" : "live"}`} opacity={dim ? 0.5 : 1}>
+                    <line
+                      {...(dim
+                        ? { className: "pss-fade" }
+                        : { pathLength: 1, className: "pss-edge", style: delay(d) })}
+                      x1={a.x + (dx / len) * pad(a)}
+                      y1={a.y + (dy / len) * pad(a)}
+                      x2={x2 - (dx / len) * 5}
+                      y2={y2 - (dy / len) * 5}
+                      stroke={color}
+                      strokeWidth={hot ? 2 : 1.25}
+                      strokeDasharray={dim ? "2 4" : undefined}
+                    />
+                    <path
+                      className="pss-fade"
+                      style={{ animationDelay: `${dim ? 0 : d + 250}ms` }}
+                      d="M0 0 L-8 -4 L-8 4 z"
+                      fill={color}
+                      transform={`translate(${x2} ${y2}) rotate(${(Math.atan2(dy, dx) * 180) / Math.PI})`}
+                    />
+                  </g>
                 );
               })
           )}
@@ -215,6 +249,7 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
                   <title>{`${e.id}: ${e.text} (${statusLabel[st]})`}</title>
                   {(isSel || fresh.includes(e.id)) && (
                     <circle
+                      className="pss-fade"
                       r={R + 8}
                       fill="none"
                       stroke={isSel ? "var(--accent)" : "var(--fg-faint)"}
@@ -222,21 +257,30 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
                       opacity={isSel ? 0.9 : 0.5}
                     />
                   )}
-                  <Shape entry={e} status={st} />
-                  {st === "dropped" && (
-                    <line x1={-R + 3} y1={R - 3} x2={R - 3} y2={-R + 3} stroke="var(--fg-faint)" strokeWidth={1.5} />
-                  )}
+                  <g className="pss-node" style={delay(delayOf(e.id, 70))}>
+                    <g
+                      key={st === "verified" || st === "met" ? "proved" : "open"}
+                      className={st === "verified" || st === "met" ? "pss-bob" : undefined}
+                      style={delay(Math.max(0, fresh.indexOf(e.id)) * 70)}
+                    >
+                      <Shape entry={e} status={st} />
+                      {st === "dropped" && (
+                        <line className="pss-fade" x1={-R + 3} y1={R - 3} x2={R - 3} y2={-R + 3} stroke="var(--fg-faint)" strokeWidth={1.5} />
+                      )}
+                      <text
+                        textAnchor="middle"
+                        dominantBaseline="central"
+                        fontSize={e.kind === "goal" ? 10.5 : 11.5}
+                        fontWeight={600}
+                        fontFamily="var(--font-mono)"
+                        fill={s.text}
+                      >
+                        {e.kind === "goal" ? "GOAL" : e.id}
+                      </text>
+                    </g>
+                  </g>
                   <text
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize={e.kind === "goal" ? 10.5 : 11.5}
-                    fontWeight={600}
-                    fontFamily="var(--font-mono)"
-                    fill={s.text}
-                  >
-                    {e.kind === "goal" ? "GOAL" : e.id}
-                  </text>
-                  <text
+                    className="pss-fade"
                     y={R + 15}
                     textAnchor="middle"
                     fontSize={10.5}
@@ -261,7 +305,7 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
             const isSel = selected === id;
             const isNew = fresh.includes(id);
             return (
-              <li key={id}>
+              <li key={id} className="pss-rise" style={delay(delayOf(id, 40))}>
                 <button
                   type="button"
                   onClick={() => setSelected(isSel ? null : id)}
@@ -289,7 +333,7 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
                             : "text-fg-muted"
                       }`}
                     >
-                      {statusLabel[st]}
+                      <span key={st} className="pss-swap">{statusLabel[st]}</span>
                     </span>
                   </span>
                   <span
