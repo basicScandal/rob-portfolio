@@ -365,6 +365,12 @@ export const projects: Project[] = [
     link: "https://starlog.is",
   },
   {
+    title: "PSS",
+    description: "Embedded from pss.kimi.page.",
+    tags: ["embed"],
+    link: "/projects/pss",
+  },
+  {
     title: "LLM Testing Findings",
     description:
       "Open-source templates for documenting vulnerabilities in LLM integrations. Curated list of every open-source LLM testing tool. 74 stars, community standard.",
