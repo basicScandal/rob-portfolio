@@ -7,7 +7,7 @@ import { castleTrace, defenseTrace, offenseTrace } from "@/lib/pssTraces";
 export const metadata: Metadata = {
   title: "The search outlives the agent: three examples",
   description:
-    "A castle, an offensive security goal and an incident question, each stepped through on a shared board of facts, intents and hints.",
+    "Three examples of a search that outlives the agent: a castle, an offensive security goal and an incident question. Each example shows a shared board of facts, intents and hints, one step at a time.",
 };
 
 const mapping: [string, string][] = [
@@ -59,19 +59,19 @@ export default function PssExamplesPage() {
         </Link>
 
         <header className="mt-8 max-w-3xl">
-          <span className="section-number">Research &mdash; the examples</span>
-          <h1 className="font-editorial text-4xl sm:text-5xl font-bold mt-3 text-fg text-balance">
+          <span className="pss-rise section-number inline-block">Research &mdash; the examples</span>
+          <h1 style={{ "--d": "40ms" } as React.CSSProperties} className="pss-rise font-editorial text-4xl sm:text-5xl font-bold mt-3 text-fg text-balance">
             The search outlives the agent
           </h1>
-          <p className="mt-5 text-lg text-fg-muted leading-relaxed">
+          <p className="pss-rise mt-5 text-lg text-fg-muted leading-relaxed" style={{ "--d": "80ms" } as React.CSSProperties}>
             Some agent systems hold a goal like{" "}
-            <em className="text-fg">find RCE on *.company.com</em> for days by
-            keeping the search outside the model: the known facts, the
-            investigations in progress and the rejected ideas live on a shared
-            board, and every model session is replaceable. Here are three runs
-            of that idea, one step at a time.
+            <em className="text-fg">find RCE on *.company.com</em> for days.
+            They keep the search outside the model. A shared board stores the
+            known facts, the investigations in progress and the rejected
+            ideas, and the system can replace each model session. This page
+            shows three runs, one step at a time.
           </p>
-          <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+          <div className="pss-rise mt-6 flex flex-wrap gap-x-6 gap-y-2" style={{ "--d": "120ms" } as React.CSSProperties}>
             <a href="#castle" className="font-meta text-accent hover:text-accent-hover">01 A castle</a>
             <a href="#offense" className="font-meta text-accent hover:text-accent-hover">02 Offense</a>
             <a href="#defense" className="font-meta text-accent hover:text-accent-hover">03 Defense</a>
@@ -86,9 +86,9 @@ export default function PssExamplesPage() {
           <p className="font-meta text-fg-faint">How to read the graphs</p>
           <p className="text-sm text-fg-muted leading-relaxed mt-2 max-w-3xl">
             Circles are facts and squares are intents. Each intent cites the
-            facts that motivate it, and each fact records the intent that
-            produced it, so the graph only grows forward. Step through a run,
-            or select any entry to trace its links.
+            facts that motivate it. Each fact records the intent that produced
+            it. Each new entry cites only older entries. Use the controls to
+            step through a run. Select an entry to see its links.
           </p>
           <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
             {legend.map((l) => (
@@ -107,10 +107,10 @@ export default function PssExamplesPage() {
             A castle, a treasure, a notebook
           </h2>
           <p className="mt-4 text-fg-muted leading-relaxed max-w-3xl">
-            A treasure is somewhere in a large castle. Send a team, and give
-            them one notebook that remembers everything. It keeps its notes
-            when you sleep, when you return the next day, and when a friend
-            takes your place. Nobody has to start again.
+            Imagine a treasure in a large castle. Send a team, and give the
+            team one notebook that remembers everything. The notebook keeps
+            its notes when you sleep, when you return the next day, and when a
+            friend takes your place. Nobody has to start again.
           </p>
           <TraceExplorer trace={castleTrace} label="The castle" />
           <div className="mt-8 overflow-x-auto">
@@ -133,7 +133,7 @@ export default function PssExamplesPage() {
           </div>
           <p className="mt-6 text-fg-muted leading-relaxed max-w-3xl">
             A single agent is one capable explorer who must remember
-            everything. This architecture is an expedition: an explorer can get
+            everything. The architecture is an expedition. An explorer can get
             confused, get tired or leave, and the expedition still keeps what
             it learned.
           </p>
@@ -146,21 +146,22 @@ export default function PssExamplesPage() {
             One goal, traced
           </h2>
           <p className="mt-4 text-fg-muted leading-relaxed max-w-3xl">
-            Show code execution on a host in *.company.com, in an authorized
-            assessment. Actions are read-only by default, the system touches
-            no data and leaves nothing behind, and each state-changing action
-            needs approval. This is a generic composite with no payloads, tools
-            or technique detail. Only one command ever runs on the target: a
-            harmless marker, approved by a human first.
+            The goal is to show code execution on a host in *.company.com, in
+            an authorized assessment. Actions are read-only by default. The
+            system does not access data, and it leaves nothing persistent on
+            the target. Each state-changing action needs approval. This
+            example is a generic composite. It contains no payloads, tools or
+            technique details. Only one command runs on the target: a harmless
+            marker command, and a human approves it first.
           </p>
           <TraceExplorer trace={offenseTrace} label="The offensive run" />
           <Takeaways
             items={[
-              ["Two facts converge", "The leaked account and the portal's upload feature are not findings alone. One intent joins them from opposite sides of the graph."],
-              ["A negative fact saves work", "The main application's inputs are clean, so the planner never returns to them."],
-              ["An idea is dropped, with a reason", "Trying default logins was reasonable until another fact made it unnecessary. The report can still say it was considered."],
-              ["A human approves the one risky action", "The only state-changing step waits for approval and runs under written conditions."],
-              ["Evidence is replayed", "The goal is declared only after separate sessions reproduce every fact on the path from its stored artifact."],
+              ["Two facts converge", "The leaked account and the upload feature of the portal are not findings alone. One intent joins them from opposite sides of the graph."],
+              ["A negative fact saves work", "The inputs of the main application are clean, so the planner does not return to them."],
+              ["The planner drops an intent with a reason", "The idea to try default logins was reasonable, but a later fact made it unnecessary. The report can say that the system considered it."],
+              ["A human approves the only state-changing action", "That action waits for the approval and runs under written conditions."],
+              ["Separate sessions replay the evidence", "The system declares the goal only after they reproduce each fact on the path from its stored artifact."],
             ]}
           />
         </section>
@@ -173,17 +174,17 @@ export default function PssExamplesPage() {
           </h2>
           <p className="mt-4 text-fg-muted leading-relaxed max-w-3xl">
             An alert reports an unusual sign-in on a build server at 02:14. The
-            incident lead must answer one question before morning: did the
+            incident lead must answer one question before morning. Did the
             intruder reach the customer database, and how far did the intruder
             get?
           </p>
           <TraceExplorer trace={defenseTrace} label="The defensive run" />
           <Takeaways
             items={[
-              ["All the work runs in parallel", "Read-only queries cannot disturb each other or production."],
-              ["The evidence already exists", "A log is an artifact. Each fact points to rows a second analyst can read, which is what an incident report needs."],
-              ["A negative fact supports the answer", "No unusual egress is what lets the answer say nothing was exported in bulk."],
-              ["A hint is cheap", "The logs alone made the backup theory plausible. One sentence from a person who knows the environment removed it."],
+              ["All the work runs in parallel", "The actions are read-only queries, so they cannot disturb each other or production."],
+              ["The evidence already exists", "A log is an artifact. Each fact points to rows that a second analyst can read. An incident report needs this property."],
+              ["A negative fact supports the answer", "The fact \u201cno unusual egress\u201d supports the conclusion that the intruder exported nothing in bulk."],
+              ["A hint from the operator removes a wrong theory", "The logs alone made the backup theory plausible. One sentence from a person who knows the environment removed it."],
             ]}
           />
         </section>
@@ -191,20 +192,22 @@ export default function PssExamplesPage() {
         {/* Footer */}
         <footer className="mt-24 border-t border-border pt-8">
           <p className="text-fg-muted leading-relaxed max-w-3xl">
-            The architecture does not always pay. In one controlled evaluation
-            it used about four times the tokens of a single agent on a security
-            benchmark and was slower on 30 of 40 tasks, while finishing sooner
-            on 76.5% of the hardest ones. The full paper covers the mechanisms,
-            the evidence and where it breaks.
+            The architecture does not always pay. In one controlled
+            evaluation, it used about four times the tokens of a single agent
+            on a cybersecurity benchmark. It was also slower on 30 of 40
+            tasks. On the hardest tasks across two benchmarks, it finished
+            sooner 76.5% of the time. The full paper gives the mechanisms, the
+            evidence and the failure modes.
           </p>
           <Link href="/projects/pss" className="mt-5 inline-flex items-center gap-2 btn-primary rounded px-4 py-2.5 text-sm font-medium">
             Read the full paper <ArrowRight size={14} />
           </Link>
           <p className="mt-8 text-xs text-fg-faint leading-relaxed max-w-3xl">
-            The three runs are schematic and follow the paper&rsquo;s castle
-            analogy and its Figs. 10 and 11. Some board entries are filled in
-            to keep each walk-through complete. Every security example assumes
-            written authorization and an enforced scope.
+            The three runs are schematic. They follow the castle analogy and
+            Figs. 10 and 11 of the paper. We wrote some board entries to
+            complete each run. Each security example assumes written
+            authorization and an enforced scope. The motion timing follows the
+            motion tokens that transitions.dev publishes.
           </p>
         </footer>
       </div>

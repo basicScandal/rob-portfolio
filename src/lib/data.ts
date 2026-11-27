@@ -367,7 +367,7 @@ export const projects: Project[] = [
   {
     title: "The Search Outlives the Agent",
     description:
-      "Research explainer on agent architectures that keep the search outside the model. A shared board of facts, intents and hints lets a goal like 'find RCE on *.company.com' survive for days. Three worked examples, plus the evidence on when a single agent is the better tool.",
+      "A research explainer on agent architectures that keep the search outside the model. A shared board of facts, intents and hints holds a goal like 'find RCE on *.company.com' for days. The page shows three examples, one step at a time, and links to the full paper.",
     tags: ["agents", "research", "offsec"],
     link: "/projects/pss/examples",
   },
