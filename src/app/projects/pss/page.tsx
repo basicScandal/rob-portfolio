@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 
 const PSS_URL = "https://pss.kimi.page/";
 
 export const metadata: Metadata = {
-  title: "PSS",
-  description: "PSS, embedded from pss.kimi.page.",
+  title: "The search outlives the agent",
+  description:
+    "How some agent systems hold a goal like find RCE on *.company.com for days, what it costs them, and when a single agent is the better tool.",
 };
 
 export default function PssPage() {
@@ -20,6 +21,13 @@ export default function PssPage() {
           >
             <ArrowLeft size={14} />
             Projects
+          </Link>
+          <Link
+            href="/projects/pss/examples"
+            className="font-meta text-accent hover:text-accent-hover transition-colors inline-flex items-center gap-1.5 ml-auto"
+          >
+            Just the examples
+            <ArrowRight size={14} />
           </Link>
           <a
             href={PSS_URL}
@@ -35,7 +43,7 @@ export default function PssPage() {
         <div className="card-editorial rounded-lg overflow-hidden">
           <iframe
             src={PSS_URL}
-            title="PSS"
+            title="The search outlives the agent"
             loading="lazy"
             referrerPolicy="no-referrer"
             className="block w-full h-[calc(100vh-10rem)] min-h-[600px] bg-white"

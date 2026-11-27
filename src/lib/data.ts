@@ -365,10 +365,11 @@ export const projects: Project[] = [
     link: "https://starlog.is",
   },
   {
-    title: "PSS",
-    description: "Embedded from pss.kimi.page.",
-    tags: ["embed"],
-    link: "/projects/pss",
+    title: "The Search Outlives the Agent",
+    description:
+      "Research explainer on agent architectures that keep the search outside the model. A shared board of facts, intents and hints lets a goal like 'find RCE on *.company.com' survive for days. Three worked examples, plus the evidence on when a single agent is the better tool.",
+    tags: ["agents", "research", "offsec"],
+    link: "/projects/pss/examples",
   },
   {
     title: "LLM Testing Findings",
