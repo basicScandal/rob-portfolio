@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { projects } from "@/lib/data";
 
 export const metadata: Metadata = {
@@ -58,12 +58,17 @@ export default function ProjectsPage() {
                   {project.link && (
                     <a
                       href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      {...(project.link.startsWith("/")
+                        ? {}
+                        : { target: "_blank", rel: "noopener noreferrer" })}
                       className="text-fg-faint hover:text-accent transition-colors shrink-0 ml-2"
                       aria-label={`View ${project.title}`}
                     >
-                      <ExternalLink size={16} />
+                      {project.link.startsWith("/") ? (
+                        <ArrowRight size={16} />
+                      ) : (
+                        <ExternalLink size={16} />
+                      )}
                     </a>
                   )}
                 </div>
