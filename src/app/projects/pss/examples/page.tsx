@@ -39,7 +39,7 @@ function Takeaways({ items }: { items: [string, string][] }) {
       {items.map(([head, body]) => (
         <li key={head} className="border-t border-dashed border-border pt-3">
           <p className="font-editorial text-lg text-fg">{head}</p>
-          <p className="text-sm text-fg-muted leading-relaxed mt-1">{body}</p>
+          <p className="text-base text-fg leading-relaxed mt-1">{body}</p>
         </li>
       ))}
     </ul>
@@ -63,7 +63,7 @@ export default function PssExamplesPage() {
           <h1 style={{ "--d": "40ms" } as React.CSSProperties} className="pss-rise font-editorial text-4xl sm:text-5xl font-bold mt-3 text-fg text-balance">
             The search outlives the agent
           </h1>
-          <p className="pss-rise mt-5 text-lg text-fg-muted leading-relaxed" style={{ "--d": "80ms" } as React.CSSProperties}>
+          <p className="pss-rise mt-5 text-lg text-fg leading-relaxed max-w-[62ch]" style={{ "--d": "80ms" } as React.CSSProperties}>
             Some agent systems hold a goal like{" "}
             <em className="text-fg">find RCE on *.company.com</em> for days.
             They keep the search outside the model. A shared board stores the
@@ -83,8 +83,8 @@ export default function PssExamplesPage() {
 
         {/* Legend */}
         <div className="mt-10 border border-border rounded-lg bg-bg-card p-4 sm:p-5">
-          <p className="font-meta text-fg-faint">How to read the graphs</p>
-          <p className="text-sm text-fg-muted leading-relaxed mt-2 max-w-3xl">
+          <p className="font-meta text-fg-muted">How to read the graphs</p>
+          <p className="text-base text-fg leading-relaxed mt-2 max-w-[68ch]">
             Circles are facts and squares are intents. Each intent cites the
             facts that motivate it. Each fact records the intent that produced
             it. Each new entry cites only older entries. Use the controls to
@@ -92,7 +92,7 @@ export default function PssExamplesPage() {
           </p>
           <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
             {legend.map((l) => (
-              <li key={l.label} className="inline-flex items-center gap-2 text-xs text-fg-muted">
+              <li key={l.label} className="inline-flex items-center gap-2 text-[13px] text-fg-muted">
                 <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">{l.node}</svg>
                 {l.label}
               </li>
@@ -106,7 +106,7 @@ export default function PssExamplesPage() {
           <h2 className="font-editorial text-3xl sm:text-4xl font-bold mt-2 text-fg">
             A castle, a treasure, a notebook
           </h2>
-          <p className="mt-4 text-fg-muted leading-relaxed max-w-3xl">
+          <p className="mt-4 text-[17px] text-fg leading-relaxed max-w-[68ch]">
             Imagine a treasure in a large castle. Send a team, and give the
             team one notebook that remembers everything. The notebook keeps
             its notes when you sleep, when you return the next day, and when a
@@ -114,11 +114,11 @@ export default function PssExamplesPage() {
           </p>
           <TraceExplorer trace={castleTrace} label="The castle" />
           <div className="mt-8 overflow-x-auto">
-            <table className="w-full text-sm min-w-[420px]">
+            <table className="w-full text-base min-w-[420px]">
               <thead>
                 <tr className="text-left">
-                  <th className="font-meta text-fg-faint font-normal pb-2 pr-6 w-2/5">In the castle</th>
-                  <th className="font-meta text-fg-faint font-normal pb-2">In the system</th>
+                  <th className="font-meta text-fg-muted font-normal pb-2 pr-6 w-2/5">In the castle</th>
+                  <th className="font-meta text-fg-muted font-normal pb-2">In the system</th>
                 </tr>
               </thead>
               <tbody>
@@ -131,7 +131,7 @@ export default function PssExamplesPage() {
               </tbody>
             </table>
           </div>
-          <p className="mt-6 text-fg-muted leading-relaxed max-w-3xl">
+          <p className="mt-6 text-[17px] text-fg leading-relaxed max-w-[68ch]">
             A single agent is one capable explorer who must remember
             everything. The architecture is an expedition. An explorer can get
             confused, get tired or leave, and the expedition still keeps what
@@ -145,7 +145,7 @@ export default function PssExamplesPage() {
           <h2 className="font-editorial text-3xl sm:text-4xl font-bold mt-2 text-fg">
             One goal, traced
           </h2>
-          <p className="mt-4 text-fg-muted leading-relaxed max-w-3xl">
+          <p className="mt-4 text-[17px] text-fg leading-relaxed max-w-[68ch]">
             The goal is to show code execution on a host in *.company.com, in
             an authorized assessment. Actions are read-only by default. The
             system does not access data, and it leaves nothing persistent on
@@ -172,7 +172,7 @@ export default function PssExamplesPage() {
           <h2 className="font-editorial text-3xl sm:text-4xl font-bold mt-2 text-fg">
             One question, traced
           </h2>
-          <p className="mt-4 text-fg-muted leading-relaxed max-w-3xl">
+          <p className="mt-4 text-[17px] text-fg leading-relaxed max-w-[68ch]">
             An alert reports an unusual sign-in on a build server at 02:14. The
             incident lead must answer one question before morning. Did the
             intruder reach the customer database, and how far did the intruder
@@ -191,7 +191,7 @@ export default function PssExamplesPage() {
 
         {/* Footer */}
         <footer className="mt-24 border-t border-border pt-8">
-          <p className="text-fg-muted leading-relaxed max-w-3xl">
+          <p className="text-[17px] text-fg leading-relaxed max-w-[68ch]">
             The architecture does not always pay. In one controlled
             evaluation, it used about four times the tokens of a single agent
             on a cybersecurity benchmark. It was also slower on 30 of 40
@@ -202,7 +202,7 @@ export default function PssExamplesPage() {
           <Link href="/projects/pss" className="mt-5 inline-flex items-center gap-2 btn-primary rounded px-4 py-2.5 text-sm font-medium">
             Read the full paper <ArrowRight size={14} />
           </Link>
-          <p className="mt-8 text-xs text-fg-faint leading-relaxed max-w-3xl">
+          <p className="mt-8 text-[13px] text-fg-muted leading-relaxed max-w-[68ch]">
             The three runs are schematic. They follow the castle analogy and
             Figs. 10 and 11 of the paper. We wrote some board entries to
             complete each run. Each security example assumes written
