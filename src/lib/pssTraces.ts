@@ -108,9 +108,9 @@ export const offenseTrace: Trace = {
     { id: "i5", kind: "intent", short: "default logins", text: "Does the portal accept default logins?", by: "Planner", from: ["f2"], x: 290, y: 125 },
     { id: "f4", kind: "fact", short: "upload feature", text: "The portal has an upload feature behind its sign-in.", by: "Worker", from: ["i4"], x: 400, y: 105 },
     { id: "f5", kind: "fact", short: "company sign-in", text: "The portal signs in ordinary company accounts.", by: "Worker", from: ["i4"], x: 410, y: 30 },
-    { id: "i6", kind: "intent", short: "account + upload", text: "Does the leaked account open the portal, and does its upload feature lead to code execution?", by: "Planner", from: ["f1", "f4", "h1"], x: 500, y: 185 },
+    { id: "i6", kind: "intent", short: "try the upload", text: "Does the leaked account open the portal, and does its upload feature lead to code execution?", by: "Planner", from: ["f1", "f4", "h1"], x: 492, y: 185 },
     { id: "h1", kind: "hint", short: "marker only", text: "Approved. Use the marker command only. Do not open a shell.", by: "Operator", from: [], x: 400, y: 270 },
-    { id: "f6", kind: "fact", short: "marker ran", text: "The marker command ran on the portal host. The board stores the request and the response.", by: "Worker", from: ["i6"], x: 585, y: 185 },
+    { id: "f6", kind: "fact", short: "marker ran", text: "The marker command ran on the portal host. The board stores the request and the response.", by: "Worker", from: ["i6"], x: 578, y: 185 },
   ],
   steps: [
     {

@@ -171,13 +171,13 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
             ))}
           </div>
         </div>
-        <div className="mt-4 min-h-[9.5rem] sm:min-h-[7rem]" aria-live="polite">
+        <div className="mt-4 min-h-[12rem] sm:min-h-[8rem]" aria-live="polite">
           <p className="font-meta text-accent">
             Step {step + 1} of {last + 1}
           </p>
           <div key={step}>
             <h3 className="pss-rise font-editorial text-xl text-fg mt-1">{current.title}</h3>
-            <p className="pss-rise text-sm text-fg-muted leading-relaxed mt-1.5 max-w-3xl" style={delay(40)}>
+            <p className="pss-rise text-base text-fg leading-relaxed mt-1.5 max-w-[68ch]" style={delay(40)}>
               {current.text}
             </p>
           </div>
@@ -270,7 +270,7 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
                       <text
                         textAnchor="middle"
                         dominantBaseline="central"
-                        fontSize={e.kind === "goal" ? 10.5 : 11.5}
+                        fontSize={e.kind === "goal" ? 10.5 : 12}
                         fontWeight={600}
                         fontFamily="var(--font-mono)"
                         fill={s.text}
@@ -283,9 +283,9 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
                     className="pss-fade"
                     y={R + 15}
                     textAnchor="middle"
-                    fontSize={10.5}
+                    fontSize={12}
                     fontFamily="var(--font-sans)"
-                    fill="var(--fg-muted)"
+                    fill="color-mix(in srgb, var(--fg) 80%, var(--bg-card))"
                   >
                     {e.short}
                   </text>
@@ -297,7 +297,7 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
 
       {/* Board */}
       <div className="p-4 sm:p-5">
-        <p className="font-meta text-fg-faint mb-3">The board, in the order of writing</p>
+        <p className="font-meta text-fg-muted mb-3">The board, in the order of writing</p>
         <ol className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5">
           {order.map((id) => {
             const e = byId[id];
@@ -318,14 +318,14 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
                   }`}
                 >
                   <span className="flex items-baseline gap-2 flex-wrap">
-                    <span className="font-mono text-xs font-semibold text-fg">
+                    <span className="font-mono text-[13px] font-semibold text-fg">
                       {e.kind === "goal" ? "goal" : e.id}
                     </span>
-                    <span className="font-meta text-[10px] text-fg-faint">
+                    <span className="font-meta text-[11px] text-fg-muted">
                       {e.kind} &middot; {e.by}
                     </span>
                     <span
-                      className={`font-meta text-[10px] ml-auto ${
+                      className={`font-meta text-[11px] ml-auto ${
                         st === "verified" || st === "met"
                           ? "text-accent"
                           : st === "held" || st === "hint"
@@ -337,7 +337,7 @@ export function TraceExplorer({ trace, label }: { trace: Trace; label: string })
                     </span>
                   </span>
                   <span
-                    className={`block text-sm leading-snug mt-0.5 ${
+                    className={`block text-[15px] leading-snug mt-0.5 ${
                       st === "dropped" ? "text-fg-faint line-through" : "text-fg"
                     }`}
                   >
